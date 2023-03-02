@@ -9,7 +9,7 @@
           <div class="tg-innerbannercontent">
             <div class="tg-pagetitle">
               <h1>
-                <i class="fa fa-shield"></i> Edition du rôle "{{ getAddRoleForm.name.value }}"</h1>
+                <i class="fa fa-shield"></i> Edition du rôle "{{ getAddRoleForm['name'].value }}"</h1>
             </div>
             <ol class="tg-breadcrumb">
               <li>
@@ -39,24 +39,24 @@
                           <label for="name">Nom du rôle
                             <span class="invalid-feedback">*</span>
                           </label>
-                          <input type="text" name="name" (change)="getAddRoleForm.name.setValue($event.target.value)" required class="form-control" formControlName="name"
+                          <input type="text" name="name" (change)="getAddRoleForm['name'].setValue($any($event.target).value)" required class="form-control" formControlName="name"
                             id="name" placeholder="Nom">
-                          <div *ngIf="isSubmitted && getAddRoleForm.name.errors" class="invalid-feedback">
-                            <div *ngIf="getAddRoleForm.name.errors['required']">Champs requis</div>
-                            <div *ngIf="getAddRoleForm.name.errors['minlength']">Mininum 3 caractères</div>
-                            <div *ngIf="getAddRoleForm.name.errors['maxlength']">Maximum 20 caractères</div>
+                          <div *ngIf="isSubmitted && getAddRoleForm['name'].errors" class="invalid-feedback">
+                            <div *ngIf="getAddRoleForm['name'].errors['required']">Champs requis</div>
+                            <div *ngIf="getAddRoleForm['name'].errors['minlength']">Mininum 3 caractères</div>
+                            <div *ngIf="getAddRoleForm['name'].errors['maxlength']">Maximum 20 caractères</div>
                           </div>
                         </div>
                         <div class="form-group">
                           <label for="description">Description du rôle
                             <span class="invalid-feedback">*</span>
                           </label>
-                          <textarea class="form-control" (change)="getAddRoleForm.description.setValue($event.target.value)" required name="description" formControlName="description"
+                          <textarea class="form-control" (change)="getAddRoleForm['description'].setValue($any($event.target).value)" required name="description" formControlName="description"
                             id="description" rows="3"></textarea>
-                          <div *ngIf="isSubmitted && getAddRoleForm.description.errors" class="invalid-feedback">
-                            <div *ngIf="getAddRoleForm.description.errors['required']">Champs requis</div>
-                            <div *ngIf="getAddRoleForm.description.errors['minlength']">Mininum 10 caractères</div>
-                            <div *ngIf="getAddRoleForm.description.errors['maxlength']">Maximum 255 caractères</div>
+                          <div *ngIf="isSubmitted && getAddRoleForm['description'].errors" class="invalid-feedback">
+                            <div *ngIf="getAddRoleForm['description'].errors['required']">Champs requis</div>
+                            <div *ngIf="getAddRoleForm['description'].errors['minlength']">Mininum 10 caractères</div>
+                            <div *ngIf="getAddRoleForm['description'].errors['maxlength']">Maximum 255 caractères</div>
                           </div>
                         </div>
                         <div class="form-group">

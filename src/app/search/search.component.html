@@ -34,20 +34,20 @@
 										<div class="col-sm-3">
                       <div class="form-group">
 												<small>Nom</small>
-												<input #searchBox (keyup)='searchName($event.target.value)' type="text" class="form-control" [(value)]="recherche" ngModel name="name" placeholder="Nom">
+												<input #searchBox (keyup)='searchName($any($event.target).value)' type="text" class="form-control" [(value)]="recherche" ngModel name="name" placeholder="Nom">
                         </div>
 										</div>
-										
+
                    <div class="col-sm-3" *ngFor="let m of metadatas">
                       <div class="form-group">
 												<small>{{ m.label }}</small>
-                        <input #searchBox (keyup)='searchMeta($event.target.value)' type="{{ m.type }}" class="form-control" ngModel name="{{ m.name }}" placeholder="{{ m.label }}">
+                        <input #searchBox (keyup)='searchMeta($any($event.target).value)' type="{{ m.type }}" class="form-control" ngModel name="{{ m.name }}" placeholder="{{ m.label }}">
                       </div>
-                    </div> 
+                    </div>
 
-                    <br *ngIf="(metadatas.length+1)%4 === 0">
+                    <br *ngIf="(metadatas!.length+1)%4 === 0">
                     <div class="col-xs-10 col-xs-offset-1 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4"
-                    	*ngIf="(metadatas.length+1)%4 === 0">
+                    	*ngIf="(metadatas!.length+1)%4 === 0">
                       <div class="form-group">
 												<small style="opacity:0;">Lancer la recherchce</small>
                         <button class="tg-btn" (click)="searchMeta()" [disabled]="isLoading">
@@ -57,8 +57,8 @@
                     </div>
 
                     <div
-                    	class="col-xs-10 col-xs-offset-1 col-sm-3 col-md-3 col-md-offset-{{ 3-((metadatas.length+1)%4) }}"
-                    	*ngIf="(metadatas.length+1)%4 > 0">
+                    	class="col-xs-10 col-xs-offset-1 col-sm-3 col-md-3 col-md-offset-{{ 3-((metadatas!.length+1)%4) }}"
+                    	*ngIf="(metadatas!.length+1)%4 > 0">
                       <div class="form-group">
 												<small style="opacity:0;">Lancer la recherchce</small>
                         <button type="button" class="tg-btn" (click)="searchMeta()" [disabled]="isLoading">
@@ -143,7 +143,7 @@
 									<tfoot>
 										<tr>
 											<td colSpan="7" *ngIf="(archives | filterBy: doFilter).length > numberRowsOnPage">
-												<mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+												<mfBootstrapPaginator [rowsOnPageSet]="pages"></mfBootstrapPaginator>
 											</td>
 										</tr>
 									</tfoot>
@@ -214,8 +214,8 @@
 				if(archives.toLowerCase().indexOf(string.toLowerCase()) >=0 ){
 					output.push(archives);
 				}
-			}); 
-			$scope.filterArchives = output; 
+			});
+			$scope.filterArchives = output;
 		}
 	});*/
 </script>

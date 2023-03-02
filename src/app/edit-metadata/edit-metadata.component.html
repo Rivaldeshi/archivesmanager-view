@@ -9,7 +9,7 @@
           <div class="tg-innerbannercontent">
             <div class="tg-pagetitle">
               <h1>
-                <i class="fa fa-align-justify"></i> Edition de la méta donnée "{{ getAddMetaForm.name.value }}"</h1>
+                <i class="fa fa-align-justify"></i> Edition de la méta donnée "{{ getAddMetaForm['name'].value }}"</h1>
             </div>
             <ol class="tg-breadcrumb">
               <li>
@@ -37,12 +37,12 @@
                       <label for="label">Nom de la méta donnée
                         <span class="invalid-feedback">*</span>
                       </label>
-                      <input type="text" name="label" (change)="getAddMetaForm.label.setValue($event.target.value)" required formControlName="label" class="form-control"
+                      <input type="text" name="label" (change)="getAddMetaForm['label'].setValue($any($event.target).value)" required formControlName="label" class="form-control"
                         id="label" placeholder="label">
-                      <div *ngIf="isSubmitted && getAddMetaForm.label.errors" class="invalid-feedback">
-                        <div *ngIf="getAddMetaForm.label.errors['required']">Champs requis</div>
-                        <div *ngIf="getAddMetaForm.label.errors['minlength']">Mininum 3 caractères</div>
-                        <div *ngIf="getAddMetaForm.label.errors['maxlength']">Maximum 20 caractères</div>
+                      <div *ngIf="isSubmitted && getAddMetaForm['label'].errors" class="invalid-feedback">
+                        <div *ngIf="getAddMetaForm['label'].errors['required']">Champs requis</div>
+                        <div *ngIf="getAddMetaForm['label'].errors['minlength']">Mininum 3 caractères</div>
+                        <div *ngIf="getAddMetaForm['label'].errors['maxlength']">Maximum 20 caractères</div>
                       </div>
                     </div>
                     <div class="form-group">

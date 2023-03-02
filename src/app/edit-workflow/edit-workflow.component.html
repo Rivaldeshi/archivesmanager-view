@@ -9,7 +9,7 @@
           <div class="tg-innerbannercontent">
             <div class="tg-pagetitle">
               <h1>
-                <i class="fa fa-clock-o"></i> Editer la plannification "{{getAddForm.name.value}}"</h1>
+                <i class="fa fa-clock-o"></i> Editer la plannification "{{getAddForm['name'].value}}"</h1>
             </div>
             <ol class="tg-breadcrumb">
               <li>
@@ -40,9 +40,9 @@
                         <span class="invalid-feedback">*</span>
                       </label>
                       <input type="text" name="name" required formControlName="name" class="form-control" id="name" autocomplete="off" placeholder="Nom">
-                      <div *ngIf="isSubmitted && getAddForm.name.errors" class="invalid-feedback">
-                        <div *ngIf="getAddForm.name.errors['required']">Champs requis</div>
-                        <div *ngIf="getAddForm.name.errors['minlength']">Mininum 3 caractères</div>
+                      <div *ngIf="isSubmitted && getAddForm['name'].errors" class="invalid-feedback">
+                        <div *ngIf="getAddForm['name'].errors['required']">Champs requis</div>
+                        <div *ngIf="getAddForm['name'].errors['minlength']">Mininum 3 caractères</div>
                       </div>
                     </div>
                     <div class="form-group">
@@ -50,8 +50,8 @@
                         <span class="invalid-feedback">*</span>
                       </label>
                       <input type="date" name="date" min="{{today}}" required formControlName="date" class="form-control" id="date" autocomplete="off" placeholder="date">
-                      <div *ngIf="isSubmitted && getAddForm.date.errors" class="invalid-feedback">
-                        <div *ngIf="getAddForm.date.errors['required']">Champs requis</div>
+                      <div *ngIf="isSubmitted && getAddForm['date'].errors" class="invalid-feedback">
+                        <div *ngIf="getAddForm['date'].errors['required']">Champs requis</div>
                       </div>
                     </div>
                     <div class="form-group">
@@ -59,8 +59,8 @@
                         <span class="invalid-feedback">*</span>
                       </label>
                       <input type="time" name="time" required formControlName="time" class="form-control" id="time" autocomplete="off" placeholder="time">
-                      <div *ngIf="isSubmitted && getAddForm.time.errors" class="invalid-feedback">
-                        <div *ngIf="getAddForm.time.errors['required']">Champs requis</div>
+                      <div *ngIf="isSubmitted && getAddForm['time'].errors" class="invalid-feedback">
+                        <div *ngIf="getAddForm['time'].errors['required']">Champs requis</div>
                       </div>
                     </div>
                     <div class="form-group">

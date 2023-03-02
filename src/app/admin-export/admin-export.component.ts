@@ -24,9 +24,9 @@ export class AdminExportComponent implements OnInit {
 	servers: any;
 	showSpinner: boolean = false;
 	display = false;
-	percentDone: number = 0;
+	percentDone: any = 0;
 	selectedItems: any[] = [];
-	dropdownList: Object = [];
+	dropdownList: any = [];
 	dropdownSettings = {};
 	isSelected = false;
 	kbLoaded: string = "";

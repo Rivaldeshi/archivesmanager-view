@@ -17,8 +17,8 @@ import { Subscription } from 'rxjs';
 export class ArchiveDetailComponent implements OnInit, OnDestroy {
 
   private sub: Subscription;
-  private archive: any;
-  private metadatas: Metadata[] = [];
+  public archive: any;
+  public metadatas: Metadata[] = [];
 	isLoading: boolean = true;
 
 	canDelete = false;

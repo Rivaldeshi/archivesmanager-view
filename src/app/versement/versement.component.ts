@@ -3,7 +3,7 @@ import { GroupService } from '../services/group.service';
 import { UserService } from "../services/user.service";
 import { AuthenticationService } from '../services/authentication.service';
 import { User } from '../models/user.model';
-import { UploadEvent, FileSystemFileEntry } from 'ngx-file-drop';
+import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
 import { Metadata } from '../models/metadata.model';
 import * as URL from '../app-url';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -38,11 +38,11 @@ export class VersementComponent implements OnInit {
   //for modal
   display = 'none';
 
-  tmpEvent: UploadEvent;
+  tmpEvent: NgxFileDropEntry[] = [];
 
   //for progress bar
   processing: boolean = false;
-	progressionPercent: number;
+	progressionPercent:any;
 
 	//for multiple group select
 	selectedGoups: any[] = [];
@@ -112,9 +112,9 @@ export class VersementComponent implements OnInit {
   }
 
 
-  public dropped(event: UploadEvent) {
-    this.tmpEvent = event;
-    for (const droppedFile of event.files) {
+  public dropped(files: NgxFileDropEntry[] ) {
+    this.tmpEvent = files;
+    for (const droppedFile of files) {
       // Is it a file?
       if (droppedFile.fileEntry.isFile) {
         const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
@@ -155,12 +155,12 @@ export class VersementComponent implements OnInit {
 
     //this.files = [];
 
-    let event: UploadEvent = this.tmpEvent;
+    let files :  NgxFileDropEntry[]= this.tmpEvent;
 
-    if(!event)
+    if(!files)
       return;
 
-    for (const droppedFile of event.files) {
+    for (const droppedFile of files) {
 			// Is it a file?
       if (droppedFile.fileEntry.isFile) {
         const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
@@ -208,7 +208,7 @@ export class VersementComponent implements OnInit {
 				//console.log(item);
 			}
 		}
-		event.files = [];
+		files = [];
 		this.metadatas = [];
   }
 
@@ -227,7 +227,7 @@ export class VersementComponent implements OnInit {
     return value+'';
   }
 
-  updateMetadataValues(value: string, name:  number) {
+  updateMetadataValues(value: string, name:  any) {
     this.metadataFormValues[name] = value;
   }
 

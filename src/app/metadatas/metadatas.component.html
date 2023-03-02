@@ -38,7 +38,7 @@
                   <h3>{{ data.length }} métas données trouvées</h3>
                 </div>
                 <div class="col-lg-4 col-sm-4 col-xs-12">
-                  <input type="text" class="col-lg-12 col-sm-12 col-xs-12" placeholder="filter" (keyup)='search($event.target.value)'> </div>
+                  <input type="text" class="col-lg-12 col-sm-12 col-xs-12" placeholder="filter" (keyup)='search($any($event.target).value)'> </div>
               </div>
             </div>
           </aside>
@@ -82,7 +82,7 @@
             <tr>
               <td colspan="5">
                 <img *ngIf="mainLoading" src="assets/images/loader/MnyxU.gif" width="30px;">
-                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                <mfBootstrapPaginator [rowsOnPageSet]="pages"></mfBootstrapPaginator>
               </td>
             </tr>
           </tfoot>
@@ -113,10 +113,10 @@
               <span class="invalid-feedback">*</span>
             </label>
             <input type="text" name="label" required formControlName="label" class="form-control" id="label" autocomplete="off" placeholder="label">
-            <div *ngIf="isSubmitted && getAddMetaForm.label.errors" class="invalid-feedback">
-              <div *ngIf="getAddMetaForm.label.errors['required']">Champs requis</div>
-              <div *ngIf="getAddMetaForm.label.errors['minlength']">Mininum 3 caractères</div>
-              <div *ngIf="getAddMetaForm.label.errors['maxlength']">Maximum 20 caractères</div>
+            <div *ngIf="isSubmitted && getAddMetaForm['label'].errors" class="invalid-feedback">
+              <div *ngIf="getAddMetaForm['label'].errors['required']">Champs requis</div>
+              <div *ngIf="getAddMetaForm['label'].errors['minlength']">Mininum 3 caractères</div>
+              <div *ngIf="getAddMetaForm['label'].errors['maxlength']">Maximum 20 caractères</div>
             </div>
           </div>
           <div class="form-group">

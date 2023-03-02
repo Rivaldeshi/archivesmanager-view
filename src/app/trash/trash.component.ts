@@ -30,6 +30,7 @@ export class TrashComponent implements OnInit {
   numberRowsOnPage = 5;
   dtOptions: any;
 	dataTable: any;
+  pages: any =[5,10,25,50,100];
 
 	//for privileges
 	canConsult = false;

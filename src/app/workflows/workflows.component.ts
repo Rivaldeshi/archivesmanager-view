@@ -26,6 +26,7 @@ export class WorkflowsComponent implements OnInit {
 	description: string;
 	today: string;
 	hour: string;
+  pages: any =[5,10,25];
 
 	constructor(
 		private formBuilder: FormBuilder,

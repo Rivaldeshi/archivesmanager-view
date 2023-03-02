@@ -20,7 +20,7 @@ export class ExportComponent implements OnInit {
 	isLoading: boolean = true;
 	showSpinner: boolean = false;
 	display = false;
-	percentDone: number = 0;
+	percentDone: any = 0;
 	kbLoaded: string = '';
 	kbNeeded: string = '';
 	filter = { name: '', date: '' };

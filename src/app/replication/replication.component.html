@@ -91,8 +91,8 @@
             <span class="invalid-feedback">*</span>
           </label>
           <input type="text" name="login" required formControlName="login" class="form-control" id="login" autocomplete="off" placeholder="login">
-          <div *ngIf="isSubmitted && getReplicationForm.login.errors" class="invalid-feedback">
-            <div *ngIf="getReplicationForm.login.errors['required']">Champs requis</div>
+          <div *ngIf="isSubmitted && getReplicationForm['login'].errors" class="invalid-feedback">
+            <div *ngIf="getReplicationForm['login'].errors['required']">Champs requis</div>
           </div>
         </div>
         <div class="form-group">
@@ -101,8 +101,8 @@
           </label>
           <input type="password" name="password" required formControlName="password" class="form-control" id="password" autocomplete="off"
             placeholder="password">
-          <div *ngIf="isSubmitted && getReplicationForm.password.errors" class="invalid-feedback">
-            <div *ngIf="getReplicationForm.password.errors['required']">Champs requis</div>
+          <div *ngIf="isSubmitted && getReplicationForm['password'].errors" class="invalid-feedback">
+            <div *ngIf="getReplicationForm['password'].errors['required']">Champs requis</div>
           </div>
         </div>
         <p class="text-center">

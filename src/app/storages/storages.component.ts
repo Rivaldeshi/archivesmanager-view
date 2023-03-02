@@ -24,6 +24,7 @@ export class StoragesComponent implements OnInit {
   name: string;
   description: string;
   returnUrl: string;
+  pages :any = [5,10,25];
 
   constructor(
     private formBuilder: FormBuilder,

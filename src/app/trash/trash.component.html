@@ -59,8 +59,8 @@
               </div>
 
 							<div class="table-responsive table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl">
-              <table class="table table-striped" [mfData]="archives | filterBy: archiveFilter" #mf="mfDataTable"
-                [mfRowsOnPage]="numberRowsOnPage" *ngIf="!isLoading && archives.length > 0">
+              <table class="table table-striped" [mfData]="archives! | filterBy: archiveFilter" #mf="mfDataTable"
+                [mfRowsOnPage]="numberRowsOnPage" *ngIf="!isLoading && archives!.length > 0">
                 <thead>
                   <tr>
                     <th>
@@ -84,7 +84,8 @@
                     </td>
 										<!-- <td *ngFor="let m of metadatas">{{ a[m.name] }}</td> -->
 										<td>{{ a.name }}</td>
-										<td><a (click)="goToCategory(a.category)">{{ a.category.name }}</a></td>
+										<!-- <td><a (click)="goToCategory(a.category)">{{ a.category.name }}</a></td> -->
+                    <td><a>{{ a.category.name }}</a></td>
 										<td>{{ a.archivistName }}</td>
 										<td>{{ a.size }}</td>
 										<td>{{ a.date }}</td>
@@ -104,16 +105,16 @@
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan="7" *ngIf="(archives | filterBy: archiveFilter).length > numberRowsOnPage">
-                      <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                    <td colSpan="7" *ngIf="(archives! | filterBy: archiveFilter).length > numberRowsOnPage">
+                      <mfBootstrapPaginator [rowsOnPageSet]="pages"></mfBootstrapPaginator>
                     </td>
                   </tr>
                 </tfoot>
 							</table>
 							</div>
 
-              <h4 class="text-center" *ngIf="archives.length === 0" style="padding-top: 25px;">
-                <span *ngIf="(archives | filterBy: archiveFilter).length === 0"> AUCUNE ARCHIVE TROUVEE </span>
+              <h4 class="text-center" *ngIf="archives!.length === 0" style="padding-top: 25px;">
+                <span *ngIf="(archives! | filterBy: archiveFilter).length === 0"> AUCUNE ARCHIVE TROUVEE </span>
               </h4>
 
               <p *ngIf="isLoading" class="text-center">

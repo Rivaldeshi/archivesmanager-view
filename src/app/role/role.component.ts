@@ -24,6 +24,7 @@ export class RoleComponent implements OnInit {
   showRoleModal = false;
   loading = false;
   mainLoading = true;
+  pages : any = [5,10,25];
   private alert: AlertService;
 
   constructor(

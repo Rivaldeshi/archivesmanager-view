@@ -22,7 +22,7 @@ export class ReplicationComponent implements OnInit {
 	display = false;
 	filter = { name: "", date: "" };
 	selectedItems: Storage[] = [];
-	dropdownList: any[] | undefined = [];
+	dropdownList: any[]  = [];
 	data: any[] | undefined = [];
 	dropdownSettings = {};
 

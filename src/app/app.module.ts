@@ -40,7 +40,7 @@ import { LogsComponent } from './logs/logs.component';
 import { GroupComponent } from './group/group.component';
 import { SharingService } from './services/sharing.service';
 import { VersementComponent } from './versement/versement.component';
-//import { FileDropModule } from 'ngx-file-drop';
+import { NgxFileDropModule  } from 'ngx-file-drop';
 import { MetadataService } from './services/metadata.service';
 import { GroupService } from './services/group.service';
 import { ProgressBarModule } from 'angular-progress-bar';
@@ -48,7 +48,9 @@ import { ArchiveService } from './services/archive.service';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { LeftSideComponent } from './left-side/left-side.component';
 import { SearchComponent } from './search/search.component';
-//import { DataTableModule } from 'ng2-data-table';
+import { DataTableModule } from 'angular-6-datatable/src/DataTableModule';
+import {NgxDatatableModule } from '@swimlane/ngx-datatable';
+
 import { NgxPaginationModule } from 'ngx-pagination';
 import { LoadResourceService } from './services/load-resource.service';
 import { CoverComponent } from './cover/cover.component';
@@ -402,7 +404,9 @@ const customNotifierOptions: NotifierOptions = {
     NgMultiSelectDropDownModule.forRoot(),
     NotifierModule.withConfig(customNotifierOptions),
     ProgressBarModule,
+    DataTableModule,
     FilterPipeModule,
+    NgxFileDropModule,
     NgxPaginationModule,
     AngularMultiSelectModule,
 		NgMultiSelectDropDownModule,

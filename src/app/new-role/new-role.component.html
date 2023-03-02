@@ -38,19 +38,19 @@
                     <div class="form-group">
                       <label for="name">Nom du rôle<span class="invalid-feedback">*</span></label>
                       <input type="text" name="name" required class="form-control" formControlName="name" id="name" placeholder="Name">
-                      <div *ngIf="isSubmitted && getAddRoleForm.name.errors" class="invalid-feedback">
-                        <div *ngIf="getAddRoleForm.name.errors['required']">Champs requis</div>
-                        <div *ngIf="getAddRoleForm.name.errors['minlength']">Mininum 3 caractères</div>
-                        <div *ngIf="getAddRoleForm.name.errors['maxlength']">Maximum 20 caractères</div>
+                      <div *ngIf="isSubmitted && getAddRoleForm['name'].errors" class="invalid-feedback">
+                        <div *ngIf="getAddRoleForm['name'].errors['required']">Champs requis</div>
+                        <div *ngIf="getAddRoleForm['name'].errors['minlength']">Mininum 3 caractères</div>
+                        <div *ngIf="getAddRoleForm['name'].errors['maxlength']">Maximum 20 caractères</div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label for="description">Description du rôle<span class="invalid-feedback">*</span></label>
                       <textarea class="form-control" required name="description" formControlName="description" id="description" rows="3"></textarea>
-                      <div *ngIf="isSubmitted && getAddRoleForm.description.errors" class="invalid-feedback">
-                        <div *ngIf="getAddRoleForm.description.errors['required']">Champs requis</div>
-                        <div *ngIf="getAddRoleForm.description.errors['minlength']">Mininum 10 caractères</div>
-                        <div *ngIf="getAddRoleForm.description.errors['maxlength']">Maximum 20 caractères</div>
+                      <div *ngIf="isSubmitted && getAddRoleForm['description'].errors" class="invalid-feedback">
+                        <div *ngIf="getAddRoleForm['description'].errors['required']">Champs requis</div>
+                        <div *ngIf="getAddRoleForm['description'].errors['minlength']">Mininum 10 caractères</div>
+                        <div *ngIf="getAddRoleForm['description'].errors['maxlength']">Maximum 20 caractères</div>
                       </div>
                     </div>
                 </div>

@@ -26,6 +26,7 @@ export class CategoryComponent implements OnInit {
 	loading = false;
 	blockLoading = false;
 	mainLoading = true;
+  pages: any = [5,10,25]
 	private alert: AlertService;
 
 	constructor(

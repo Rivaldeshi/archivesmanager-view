@@ -65,7 +65,7 @@ export class SearchComponent implements OnInit {
 	static SESSION_SELECTION2 = 'SearchComponent.selectedCategories';
   //for group handling
   dropdownList = [];
-  groups: Group[] |undefined = [];
+  groups: any= [];
   selectedGoups: Group[] = [];
   dropdownSettings = {};
   groupFilter = '';
@@ -82,6 +82,8 @@ export class SearchComponent implements OnInit {
 
   //datatable
   numberRowsOnPage = 5;
+
+  pages : any = [5,10,25,50,100]
 
   //for modal
   displayDM: boolean = false;
@@ -279,7 +281,7 @@ export class SearchComponent implements OnInit {
 		this.isLoading = false;
 	}
 
-	searchMeta(name_meta: Metadata[]) {
+	searchMeta(name_meta: Metadata[]=[]) {
 		this.isLoading = true;
 		this.archives = this.archives_tmp;
 		//console.log(this.archives.name)
@@ -380,7 +382,7 @@ export class SearchComponent implements OnInit {
 		this.router.navigate(['/category']);
 	}
 
-	recherche = ""
+	recherche : any;
 
   setName(value: string){
 		/*if(value.startsWith(value[1])){

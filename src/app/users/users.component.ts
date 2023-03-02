@@ -36,6 +36,7 @@ export class UsersComponent implements OnInit {
   blockLoading = false;
   private alert: AlertService;
   groups: Group[] = [];
+  pages: any =[5,10,25];
 
   convertedJson: string;
 

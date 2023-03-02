@@ -27,6 +27,8 @@ export class GroupComponent implements OnInit {
 	canDownload = false;
 	canDelete = false;
 
+  pages : number =9;
+
 	//used by view
 	p: any;
 

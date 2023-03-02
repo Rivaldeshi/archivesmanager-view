@@ -38,7 +38,7 @@
                   <h3>{{ data.length }} rôles trouvés</h3>
                 </div>
                 <div class="col-lg-4 col-sm-4 col-xs-12">
-                  <input type="text" class="col-lg-12 col-sm-12 col-xs-12" placeholder="filter" (keyup)='search($event.target.value)'> </div>
+                  <input type="text" class="col-lg-12 col-sm-12 col-xs-12" placeholder="filter" (keyup)='search($any($event.target).value)'> </div>
               </div>
             </div>
           </aside>
@@ -85,7 +85,7 @@
             <tr>
               <td colspan="4">
                 <img *ngIf="mainLoading" src="assets/images/loader/MnyxU.gif" width="30px;">
-                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                <mfBootstrapPaginator [rowsOnPageSet]="pages"></mfBootstrapPaginator>
               </td>
             </tr>
           </tfoot>

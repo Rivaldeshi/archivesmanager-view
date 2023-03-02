@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Archive } from '../models/archive.model';
 import * as URL from '../app-url';
-import SockJS from "sockjs-client";
+import SockJS from 'sockjs-client';
 import * as Stomp from "@stomp/stompjs";
 import { Subject, PartialObserver, Subscription } from "rxjs";
 import { AlertService } from "./alert.service";

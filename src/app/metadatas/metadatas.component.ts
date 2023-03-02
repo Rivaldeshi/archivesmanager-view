@@ -29,6 +29,7 @@ export class MetadatasComponent implements OnInit {
   description: string;
   returnUrl: string;
   private alert: AlertService;
+  pages : any = [5,10,25];
 
   constructor(
     private formBuilder: FormBuilder,

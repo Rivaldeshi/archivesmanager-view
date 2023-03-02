@@ -36,7 +36,9 @@ export class LogsComponent implements OnInit {
   returnUrl: string;
   selectedLog: Log[] = [];
   checkboxs: boolean[] = [];
+  pages : any = [5,10,25];
   private alert: AlertService;
+
 
   constructor(
     private formBuilder: FormBuilder,

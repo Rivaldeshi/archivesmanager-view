@@ -30,14 +30,14 @@
 
                     <div class="col-sm-12 col-xs-12">
                       <div class="form-group" style="margin-bottom: 5%;">
-                        <file-drop headertext=" "
+                        <ngx-file-drop headertext=" "
                                   (onFileDrop)="dropped($event)"
                                   (onFileOver)="fileOver($event)"
                                   (onFileLeave)="fileLeave($event)"
-                                  showBrowseBtn="true">
+                                  [showBrowseBtn]="true">
                           <span style="margin: 2%;" id="drop-zone-text">Glissez et déposez les fichiers PDF ici,
                           	ou cliquez sur ce boutton &nbsp;</span>
-                        </file-drop>
+                        </ngx-file-drop>
                       </div>
                       <br/>
                       <div
@@ -63,7 +63,7 @@
                               <td><button class="btn btn-primary" (click)="delFile(item.path)">Supprimer</button></td>
                             </tr>
                           </tbody>
-                        </table> 							
+                        </table>
                       </div>
                     </div>
                     <div class="col-md-offset-5 col-md-4 col-sm-offset-5 col-sm-4 col-xs-6 col-xs-offset-3 text-center" style="margin-top: 4%;">
@@ -96,7 +96,7 @@
       <div class="modal-body">
         <form #f='ngForm'>
           <div class="row">
-						
+
 						<div class="col-sm-6" >
 							<div class="form-group">
                 <input type="text" class="form-control" name="name" required placeholder="Nom"  #boxName [value]="name" (change)="onNameChanged(boxName.value)">
@@ -192,8 +192,6 @@
 
 
 
-
-<!-- Progrssion Modal-->
 <div class="backdrop" [ngStyle]="{'display':processing ? 'block':'none'}"></div>
 
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':processing ? 'block':'none' }">

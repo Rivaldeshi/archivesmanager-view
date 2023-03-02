@@ -9,7 +9,7 @@
           <div class="tg-innerbannercontent">
             <div class="tg-pagetitle">
               <h1>
-                <i class="fa fa-user"></i> Edition de l'utilisateur "{{ getAddUserForm['firstName'].value }} {{ getAddUserForm.lastName.value }}"</h1>
+                <i class="fa fa-user"></i> Edition de l'utilisateur "{{ getAddUserForm['firstName'].value }} {{ getAddUserForm['lastName'].value }}"</h1>
             </div>
             <ol class="tg-breadcrumb">
               <li>
@@ -39,18 +39,18 @@
                       <label for="lastName">Noms
                         <span class="invalid-feedback">*</span>
                       </label>
-                      <input (change)="getAddUserForm.lastName.setValue($event.target.value)" type="text" name="lastName" required class="form-control" formControlName="lastName" id="lastName">
-                      <div *ngIf="isSubmitted && getAddUserForm.lastName.errors" class="invalid-feedback">
-                        <div *ngIf="getAddUserForm.lastName.errors['required']">Champs requis</div>
-                        <div *ngIf="getAddUserForm.lastName.errors['minlength']">Mininum 3 caractères</div>
-                        <div *ngIf="getAddUserForm.lastName.errors['maxlength']">Maximum 20 caractères</div>
+                      <input (change)="getAddUserForm['lastName'].setValue($any($event.target).value)" type="text" name="lastName" required class="form-control" formControlName="lastName" id="lastName">
+                      <div *ngIf="isSubmitted && getAddUserForm['lastName'].errors" class="invalid-feedback">
+                        <div *ngIf="getAddUserForm['lastName'].errors['required']">Champs requis</div>
+                        <div *ngIf="getAddUserForm['lastName'].errors['minlength']">Mininum 3 caractères</div>
+                        <div *ngIf="getAddUserForm['lastName'].errors['maxlength']">Maximum 20 caractères</div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label for="firstName">Prénoms
                         <span class="invalid-feedback">*</span>
                       </label>
-                      <input (change)="getAddUserForm['firstName'].setValue($event.target.value)" type="text" name="firstName" required class="form-control" formControlName="firstName" id="firstName">
+                      <input (change)="getAddUserForm['firstName'].setValue($any($event.target).value)" type="text" name="firstName" required class="form-control" formControlName="firstName" id="firstName">
                       <div *ngIf="isSubmitted && getAddUserForm['firstName'].errors" class="invalid-feedback">
                         <div *ngIf="getAddUserForm['firstName'].errors['required']">Champs requis</div>
                         <div *ngIf="getAddUserForm['firstName'].errors['minlength']">Mininum 3 caractères</div>
@@ -61,7 +61,7 @@
                       <label for="email">Adresse email
                         <span class="invalid-feedback">*</span>
                       </label>
-                      <input (change)="getAddUserForm['email'].setValue($event.target.value)" type="text" name="email" required class="form-control" formControlName="email" id="email">
+                      <input (change)="getAddUserForm['email'].setValue($any($event.target).value)" type="text" name="email" required class="form-control" formControlName="email" id="email">
                       <div *ngIf="isSubmitted && getAddUserForm['email'].errors" class="invalid-feedback">
                         <div *ngIf="getAddUserForm['email'].errors['required']">Champs requis</div>
                         <div *ngIf="getAddUserForm['email'].errors['minlength']">Mininum 3 caractères</div>
@@ -72,7 +72,7 @@
                       <label for="telephone">Téléphone
                         <span class="invalid-feedback">*</span>
                       </label>
-                      <input (change)="getAddUserForm['telephone'].setValue($event.target.value)" type="text" name="telephone" required class="form-control" formControlName="telephone" id="telephone">
+                      <input (change)="getAddUserForm['telephone'].setValue($any($event.target).value)" type="text" name="telephone" required class="form-control" formControlName="telephone" id="telephone">
                       <div *ngIf="isSubmitted && getAddUserForm['telephone'].errors" class="invalid-feedback">
                         <div *ngIf="getAddUserForm['telephone'].errors['required']">Champs requis</div>
                         <div *ngIf="getAddUserForm['telephone'].errors['pattern']">Format invalide</div>

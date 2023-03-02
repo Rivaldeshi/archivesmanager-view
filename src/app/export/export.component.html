@@ -46,11 +46,11 @@
 							</div>
 
 							<div class="table-responsive table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl">
-							<table class="table table-striped  table-responsive table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl" 
-								[mfData]="categories | filterBy: filter" 
-								#mf="mfDataTable" 
-								[mfRowsOnPage]="categories.length"
-							 	*ngIf="!isLoading && categories.length > 0">
+							<table class="table table-striped  table-responsive table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl"
+								[mfData]="categories! | filterBy: filter"
+								#mf="mfDataTable"
+								[mfRowsOnPage]="categories!.length"
+							 	*ngIf="!isLoading && categories!.length > 0">
 								<thead>
 									<tr>
 										<th>
@@ -80,7 +80,7 @@
 							</table>
 							</div>
 
-							<div class="row" *ngIf="!isLoading && categories.length > 0">
+							<div class="row" *ngIf="!isLoading && categories!.length > 0">
 								<div class="col-md-12 text-center">
 									<button id="export-but" class="tg-btn" [disabled]='checkNum == 0' (click)='export()'>
 										<span><i class="fa fa-file-zip-o"></i>&nbsp;Exporter</span>
@@ -88,8 +88,8 @@
 								</div>
 							</div>
 
-							<h4 class="text-center" *ngIf="categories.length === 0" style="padding-top: 25px;">
-								<span *ngIf="(categories | filterBy: filter).length === 0"> AUCUN GROUPE TROUVE </span>
+							<h4 class="text-center" *ngIf="categories!.length === 0" style="padding-top: 25px;">
+								<span *ngIf="(categories! | filterBy: filter).length === 0"> AUCUN GROUPE TROUVE </span>
 							</h4>
 
 							<p *ngIf="isLoading" class="text-center">

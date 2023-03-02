@@ -9,7 +9,7 @@
           <div class="tg-innerbannercontent">
             <div class="tg-pagetitle">
               <h1>
-                <i class="fa fa-folder"></i> Edition du stockage "{{ getAddStorageForm.name.value }}"</h1>
+                <i class="fa fa-folder"></i> Edition du stockage "{{ getAddStorageForm['name'].value }}"</h1>
             </div>
             <ol class="tg-breadcrumb">
               <li>
@@ -39,21 +39,21 @@
                         <span class="invalid-feedback">*</span>
                       </label>
                       <input type="text" name="name" required formControlName="name" class="form-control" id="name" autocomplete="off" placeholder="Name">
-                      <div *ngIf="isSubmitted && getAddStorageForm.name.errors" class="invalid-feedback">
-                        <div *ngIf="getAddStorageForm.name.errors['required']">Champs requis</div>
-                        <div *ngIf="getAddStorageForm.name.errors['minlength']">Mininum 3 caractères</div>
-                        <div *ngIf="getAddStorageForm.name.errors['maxlength']">Maximum 20 caractères</div>
+                      <div *ngIf="isSubmitted && getAddStorageForm['name'].errors" class="invalid-feedback">
+                        <div *ngIf="getAddStorageForm['name'].errors['required']">Champs requis</div>
+                        <div *ngIf="getAddStorageForm['name'].errors['minlength']">Mininum 3 caractères</div>
+                        <div *ngIf="getAddStorageForm['name'].errors['maxlength']">Maximum 20 caractères</div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label for="address">Adresse du stockage
                         <span class="invalid-feedback">*</span>
                       </label>
-                      <input type="text" name="address" disabled required formControlName="address" class="form-control" id="address" autocomplete="off"
+                      <input type="text" name="address" [disabled]=true required formControlName="address" class="form-control" id="address" autocomplete="off"
                         placeholder="address">
-                      <div *ngIf="isSubmitted && getAddStorageForm.address.errors" class="invalid-feedback">
-                        <div *ngIf="getAddStorageForm.address.errors['required']">Champs requis</div>
-                        <div *ngIf="getAddStorageForm.address.errors['pattern']">Format d'adresse IP non valide</div>
+                      <div *ngIf="isSubmitted && getAddStorageForm['address'].errors" class="invalid-feedback">
+                        <div *ngIf="getAddStorageForm['address'].errors['required']">Champs requis</div>
+                        <div *ngIf="getAddStorageForm['address'].errors['pattern']">Format d'adresse IP non valide</div>
                       </div>
                     </div>
                     <div class="form-group">
@@ -61,9 +61,9 @@
                         <span class="invalid-feedback">*</span>
                       </label>
                       <input type="text" name="path" required formControlName="path" class="form-control" id="path" autocomplete="off" placeholder="path">
-                      <div *ngIf="isSubmitted && getAddStorageForm.path.errors" class="invalid-feedback">
-                        <div *ngIf="getAddStorageForm.path.errors['required']">Champs requis</div>
-                        <div *ngIf="getAddStorageForm.path.errors['pattern']">Format du chemin non valide</div>
+                      <div *ngIf="isSubmitted && getAddStorageForm['path'].errors" class="invalid-feedback">
+                        <div *ngIf="getAddStorageForm['path'].errors['required']">Champs requis</div>
+                        <div *ngIf="getAddStorageForm['path'].errors['pattern']">Format du chemin non valide</div>
                       </div>
                     </div>
                     <div class="form-group">

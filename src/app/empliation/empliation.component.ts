@@ -26,6 +26,7 @@ export class EmpliationComponent implements OnInit {
   name: string;
   description: string;
   returnUrl: string;
+  pages : any = [5,10,25]
   private alert: AlertService;
 
   constructor(

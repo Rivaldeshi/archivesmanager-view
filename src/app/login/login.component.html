@@ -44,10 +44,10 @@
                         autocomplete="off"
                       />
                       <div
-                        *ngIf="submitted && f.login.errors"
+                        *ngIf="submitted && f['login'].errors"
                         class="invalid-feedback"
                       >
-                        <div *ngIf="f.login.errors['required']">
+                        <div *ngIf="f['login'].errors['required']">
                           Le login est requis
                         </div>
                       </div>
@@ -63,13 +63,13 @@
                         autocomplete="off"
                       />
                       <div
-                        *ngIf="submitted && f.password.errors"
+                        *ngIf="submitted && f['password'].errors"
                         class="invalid-feedback"
                       >
-                        <div *ngIf="f.password.errors['required']">
+                        <div *ngIf="f['password'].errors['required']">
                           Le mot de passe est requis
                         </div>
-                        <div *ngIf="!f.password.errors['required']">
+                        <div *ngIf="!f['password'].errors['required']">
                           Mot de passe trop court
                         </div>
                       </div>
@@ -79,7 +79,7 @@
                       <button
                         type="submit"
                         class="tg-btn"
-                        [disabled]="f.invalid || loading"
+                        [disabled]="f['invalid'] || loading"
                       >
                         <span>
                           <img

@@ -9,7 +9,7 @@
           <div class="tg-innerbannercontent">
             <div class="tg-pagetitle">
               <h1>
-                <i class="fa fa-file"></i> Editer la catégorie "{{ getAddCategoryForm.name.value }}"</h1>
+                <i class="fa fa-file"></i> Editer la catégorie "{{ getAddCategoryForm['name'].value }}"</h1>
             </div>
             <ol class="tg-breadcrumb">
               <li>
@@ -40,10 +40,10 @@
                         <span class="invalid-feedback">*</span>
                       </label>
                       <input type="text" name="name" required class="form-control" formControlName="name" id="name">
-                      <div *ngIf="isSubmitted && getAddCategoryForm.name.errors" class="invalid-feedback">
-                        <div *ngIf="getAddCategoryForm.name.errors['required']">Champs requis</div>
-                        <div *ngIf="getAddCategoryForm.name.errors['minlength']">Mininum 3 caractères</div>
-                        <div *ngIf="getAddCategoryForm.name.errors['maxlength']">Maximum 20 caractères</div>
+                      <div *ngIf="isSubmitted && getAddCategoryForm['name'].errors" class="invalid-feedback">
+                        <div *ngIf="getAddCategoryForm['name'].errors['required']">Champs requis</div>
+                        <div *ngIf="getAddCategoryForm['name'].errors['minlength']">Mininum 3 caractères</div>
+                        <div *ngIf="getAddCategoryForm['name'].errors['maxlength']">Maximum 20 caractères</div>
                       </div>
                     </div>
                     <div class="form-group">
@@ -51,10 +51,10 @@
                         <span class="invalid-feedback">*</span>
                       </label>
                       <textarea class="form-control" required name="description" formControlName="description" id="description" rows="3"></textarea>
-                      <div *ngIf="isSubmitted && getAddCategoryForm.description.errors" class="invalid-feedback">
-                        <div *ngIf="getAddCategoryForm.description.errors['required']">Champs requis</div>
-                        <div *ngIf="getAddCategoryForm.description.errors['minlength']">Mininum 10 caractères</div>
-                        <div *ngIf="getAddCategoryForm.description.errors['maxlength']">Maximum 255 caractères</div>
+                      <div *ngIf="isSubmitted && getAddCategoryForm['description'].errors" class="invalid-feedback">
+                        <div *ngIf="getAddCategoryForm['description'].errors['required']">Champs requis</div>
+                        <div *ngIf="getAddCategoryForm['description'].errors['minlength']">Mininum 10 caractères</div>
+                        <div *ngIf="getAddCategoryForm['description'].errors['maxlength']">Maximum 255 caractères</div>
                       </div>
                     </div>
                     <div class="form-group">

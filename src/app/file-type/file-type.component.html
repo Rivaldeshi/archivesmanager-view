@@ -38,7 +38,7 @@
                     </div>
                     <div *ngFor="let type of typeOfFiles" class="well well-sm">
                       {{ type }}
-                      <ui-switch [(ngModel)]="checkboxs[type]" (click)="setChecked(type)" [checked]="false" size="small" color="#337ab7"
+                      <ui-switch [(ngModel)]="checkboxs[ parseInt(type)]" (click)="setChecked(type)" [checked]="false" size="small" color="#337ab7"
                         defaultBgColor="red" class="pull-right"></ui-switch>
                     </div>
                     <br>

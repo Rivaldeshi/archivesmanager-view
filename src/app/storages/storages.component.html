@@ -38,7 +38,7 @@
                   <h3>{{ data.length }} sites trouvés</h3>
                 </div>
                 <div class="col-lg-4 col-sm-4 col-xs-12">
-                  <input type="text" class="col-lg-12 col-sm-12 col-xs-12" placeholder="filter" (keyup)='search($event.target.value)'> </div>
+                  <input type="text" class="col-lg-12 col-sm-12 col-xs-12" placeholder="filter" (keyup)='search($any($event.target).value)'> </div>
               </div>
             </div>
           </aside>
@@ -92,7 +92,7 @@
             <tr>
               <td colspan="5">
                 <img *ngIf="mainLoading" src="assets/images/loader/MnyxU.gif" width="30px;">
-                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                <mfBootstrapPaginator [rowsOnPageSet]="pages"></mfBootstrapPaginator>
               </td>
             </tr>
           </tfoot>
@@ -123,10 +123,10 @@
               <span class="invalid-feedback">*</span>
             </label>
             <input type="text" name="name" required formControlName="name" class="form-control" id="name" autocomplete="off" placeholder="Name">
-            <div *ngIf="isSubmitted && getAddStorageForm.name.errors" class="invalid-feedback">
-              <div *ngIf="getAddStorageForm.name.errors['required']">Champs requis</div>
-              <div *ngIf="getAddStorageForm.name.errors['minlength']">Mininum 3 caractères</div>
-              <div *ngIf="getAddStorageForm.name.errors['maxlength']">Maximum 20 caractères</div>
+            <div *ngIf="isSubmitted && getAddStorageForm['name'].errors" class="invalid-feedback">
+              <div *ngIf="getAddStorageForm['name'].errors['required']">Champs requis</div>
+              <div *ngIf="getAddStorageForm['name'].errors['minlength']">Mininum 3 caractères</div>
+              <div *ngIf="getAddStorageForm['name'].errors['maxlength']">Maximum 20 caractères</div>
             </div>
           </div>
           <div class="form-group">
@@ -134,9 +134,9 @@
               <span class="invalid-feedback">*</span>
             </label>
             <input type="text" name="address" required formControlName="address" class="form-control" id="address" autocomplete="off" placeholder="Address ip (X.X.X.X)">
-            <div *ngIf="isSubmitted && getAddStorageForm.address.errors" class="invalid-feedback">
-              <div *ngIf="getAddStorageForm.address.errors['required']">Champs requis</div>
-              <div *ngIf="getAddStorageForm.address.errors['pattern']">Format d'adresse IP non valide</div>
+            <div *ngIf="isSubmitted && getAddStorageForm['address'].errors" class="invalid-feedback">
+              <div *ngIf="getAddStorageForm['address'].errors['required']">Champs requis</div>
+              <div *ngIf="getAddStorageForm['address'].errors['pattern']">Format d'adresse IP non valide</div>
             </div>
           </div>
           <div class="form-group">
@@ -144,9 +144,9 @@
               <span class="invalid-feedback">*</span>
             </label>
             <input type="text" name="path" required formControlName="path" class="form-control" id="path" autocomplete="off" placeholder="path">
-            <div *ngIf="isSubmitted && getAddStorageForm.path.errors" class="invalid-feedback">
-              <div *ngIf="getAddStorageForm.path.errors['required']">Champs requis</div>
-              <div *ngIf="getAddStorageForm.path.errors['pattern']">Format du chemin non respecté</div>
+            <div *ngIf="isSubmitted && getAddStorageForm['path'].errors" class="invalid-feedback">
+              <div *ngIf="getAddStorageForm['path'].errors['required']">Champs requis</div>
+              <div *ngIf="getAddStorageForm['path'].errors['pattern']">Format du chemin non respecté</div>
             </div>
           </div>
         </div>

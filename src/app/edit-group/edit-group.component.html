@@ -9,7 +9,7 @@
           <div class="tg-innerbannercontent">
             <div class="tg-pagetitle">
               <h1>
-                <i class="fa fa-group"></i> Edition du groupe "{{ getAddEmpliationForm.name.value }}"</h1>
+                <i class="fa fa-group"></i> Edition du groupe "{{ getAddEmpliationForm['name'].value }}"</h1>
             </div>
             <ol class="tg-breadcrumb">
               <li>
@@ -36,20 +36,20 @@
                 <div class="tg-widgetcontent">
                     <div class="form-group">
                       <label for="name">Nom du groupe<span class="invalid-feedback">*</span></label>
-                      <input type="text" name="name" (change)="getAddEmpliationForm.name.setValue($event.target.value)" required formControlName="name" class="form-control" id="name" placeholder="Nom">
-                      <div *ngIf="isSubmitted && getAddEmpliationForm.name.errors" class="invalid-feedback">
-                        <div *ngIf="getAddEmpliationForm.name.errors['required']">Champs requis</div>
-                        <div *ngIf="getAddEmpliationForm.name.errors['minlength']">Mininum 3 caractères</div>
-                        <div *ngIf="getAddEmpliationForm.name.errors['maxlength']">Maximum 20 caractères</div>
+                      <input type="text" name="name" (change)="getAddEmpliationForm['name'].setValue($any($event.target).value)" required formControlName="name" class="form-control" id="name" placeholder="Nom">
+                      <div *ngIf="isSubmitted && getAddEmpliationForm['name'].errors" class="invalid-feedback">
+                        <div *ngIf="getAddEmpliationForm['name'].errors['required']">Champs requis</div>
+                        <div *ngIf="getAddEmpliationForm['name'].errors['minlength']">Mininum 3 caractères</div>
+                        <div *ngIf="getAddEmpliationForm['name'].errors['maxlength']">Maximum 20 caractères</div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label for="description">Description du groupe<span class="invalid-feedback">*</span></label>
-                      <textarea class="form-control" (change)="getAddEmpliationForm.description.setValue($event.target.value)" required name="description" formControlName="description" id="description" rows="3"></textarea>
-                      <div *ngIf="isSubmitted && getAddEmpliationForm.description.errors" class="invalid-feedback">
-                        <div *ngIf="getAddEmpliationForm.description.errors['required']">Champs requis</div>
-                        <div *ngIf="getAddEmpliationForm.description.errors['minlength']">Mininum 10 caractères</div>
-                        <div *ngIf="getAddEmpliationForm.description.errors['maxlength']">Maximum 255 caractères</div>
+                      <textarea class="form-control" (change)="getAddEmpliationForm['description'].setValue($any($event.target).value)" required name="description" formControlName="description" id="description" rows="3"></textarea>
+                      <div *ngIf="isSubmitted && getAddEmpliationForm['description'].errors" class="invalid-feedback">
+                        <div *ngIf="getAddEmpliationForm['description'].errors['required']">Champs requis</div>
+                        <div *ngIf="getAddEmpliationForm['description'].errors['minlength']">Mininum 10 caractères</div>
+                        <div *ngIf="getAddEmpliationForm['description'].errors['maxlength']">Maximum 255 caractères</div>
                       </div>
                     </div>
                     <div class="form-group">

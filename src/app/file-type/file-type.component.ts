@@ -80,7 +80,12 @@ export class FileTypeComponent implements OnInit {
 			});
 	}
 
-	setChecked(name: number) {
+  parseInt(name:string){
+   return Number.parseInt(name)
+
+  }
+
+	setChecked(name: any) {
 		if (this.checkboxs[name] == true) {
 			this.selectedType[this.selectedType.length] = name;
 		}
