@@ -30,9 +30,33 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/assets/css/main.css",
+              "src/assets/css/color.css",
+              "src/assets/css/font-awesome.min.css",
+              "src/assets/css/icomoon.css",
+              "src/assets/css/normalize.css",
+              "src/assets/css/owl.carousel.css",
+              "src/assets/css/owl.theme.css",
+              "src/assets/css/responsive.css",
+              "src/assets/css/transitions.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/jszip/dist/jszip.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "src/assets/js/owl.carousel.min.js",
+              "src/assets/js/jquery.svgInject.js",
+              "src/assets/js/isotope.pkgd.js",
+              "src/assets/js/chartsloader.js",
+              "src/assets/js/prettyPhoto.js",
+              "src/assets/js/parallax.js",
+              "src/assets/js/countTo.js",
+              "src/assets/js/appear.js",
+              "src/assets/js/main.js"
+            ]
+
           },
           "configurations": {
             "production": {
@@ -93,9 +117,34 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/bootstrap/dist/css/bootstrap-theme.min.css",
+              "src/assets/css/main.css",
+              "src/assets/css/color.css",
+              "src/assets/css/font-awesome.min.css",
+              "src/assets/css/icomoon.css",
+              "src/assets/css/normalize.css",
+              "src/assets/css/owl.carousel.css",
+              "src/assets/css/owl.theme.css",
+              "src/assets/css/responsive.css",
+              "src/assets/css/transitions.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/jszip/dist/jszip.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "src/assets/js/owl.carousel.min.js",
+              "src/assets/js/jquery.svgInject.js",
+              "src/assets/js/isotope.pkgd.js",
+              "src/assets/js/chartsloader.js",
+              "src/assets/js/prettyPhoto.js",
+              "src/assets/js/parallax.js",
+              "src/assets/js/countTo.js",
+              "src/assets/js/appear.js",
+              "src/assets/js/main.js"
+            ]
+
           }
         }
       }

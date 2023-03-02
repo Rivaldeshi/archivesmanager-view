@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Archive } from '../models/archive.model';
 import * as URL from '../app-url';
-import SockJS from 'sockjs-client';
+import * as SockJS from 'sockjs-client';
 import * as Stomp from "@stomp/stompjs";
 import { Subject, PartialObserver, Subscription } from "rxjs";
 import { AlertService } from "./alert.service";
@@ -33,9 +33,9 @@ export class DisseminationService {
 			console.log(arg);
 		} */
 
-		this.stompClient.webSocketFactory = () => {
-			return new SockJS(URL.SOCKET_CONNEXION);
-		};
+		 this.stompClient.webSocketFactory = () => {
+		 	return new SockJS(URL.SOCKET_CONNEXION) as WebSocket;
+		 };
 
 		this.stompClient.activate();
 		let that = this;
@@ -97,3 +97,5 @@ export class DisseminationService {
 
 
 }
+
+

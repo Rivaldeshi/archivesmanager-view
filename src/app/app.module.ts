@@ -48,7 +48,9 @@ import { ArchiveService } from './services/archive.service';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { LeftSideComponent } from './left-side/left-side.component';
 import { SearchComponent } from './search/search.component';
-import { DataTableModule } from 'angular-6-datatable/src/DataTableModule';
+//import { DataTableModule } from 'angular-6-datatable';
+
+import { DataTableModule } from '@pascalhonegger/ng-datatable';
 import {NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 import { NgxPaginationModule } from 'ngx-pagination';
