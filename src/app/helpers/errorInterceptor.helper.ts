@@ -23,15 +23,12 @@ export class ErrorInterceptor implements HttpInterceptor {
 		request = request.clone({
 			withCredentials: false
 		});
-		console.log(request);
 		sessionStorage.setItem(ErrorInterceptor.CUR_REQ_SESSION_VARNAME, JSON.stringify(request));
 		return next.handle(request)
 		.pipe(map( (data) => {
-			console.log(data);
 			return data;
 		}))
 		.pipe(catchError( (err) => {
-			console.log(err);
 			// We don't want to refresh token for some requests like login or refresh token itself
 			// So we verify url and we throw an error if it's the case
 			if (request.url.includes(URL.OAUTH_TOKEN)) {

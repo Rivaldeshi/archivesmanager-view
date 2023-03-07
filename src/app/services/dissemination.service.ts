@@ -2,17 +2,19 @@ import { Injectable } from "@angular/core";
 import { Archive } from '../models/archive.model';
 import * as URL from '../app-url';
 import * as SockJS from 'sockjs-client';
-import * as Stomp from "@stomp/stompjs";
+import { Stomp , Client ,StompHeaders,IFrame } from "@stomp/stompjs";
 import { Subject, PartialObserver, Subscription } from "rxjs";
 import { AlertService } from "./alert.service";
 import { ArchiveService } from "./archive.service";
+
 
 @Injectable({
   providedIn: "root"
 })
 export class DisseminationService {
 
-	private stompClient: Stomp.Client| null;
+
+	private stompClient: Client| null;
 	private sub: Subject<Archive> | null;
 	private list: Archive[] = [];
 
@@ -28,21 +30,26 @@ export class DisseminationService {
 	private initializeWebSocketConnection() {
 
 		this.sub = new Subject();
-		this.stompClient = new Stomp.Client();
+
 		/* this.stompClient.debug = function debug(arg) {
-			console.log(arg);
 		} */
 
-		 this.stompClient.webSocketFactory = () => {
-		 	return new SockJS(URL.SOCKET_CONNEXION) as WebSocket;
-		 };
+		// this.stompClient.webSocketFactory = () => {
+		//  	return new  WebSocket();
+		// };
+
+    let ws = new SockJS(URL.SOCKET_CONNEXION);
+    this.stompClient = Stomp.over(ws);
+
 
 		this.stompClient.activate();
 		let that = this;
-		let stompHeaders = new Stomp.StompHeaders;
+		let stompHeaders = new StompHeaders;
 		stompHeaders['Accept'] = 'application/json';
 		stompHeaders['withCredentials'] = 'false';
-		this.stompClient.onConnect = (frame: Stomp.IFrame) => {
+
+
+		this.stompClient.onConnect = (frame: IFrame) => {
 			that.stompClient!.subscribe(URL.SOCKET_DESTINATION, (message) => {
 				if (message.body) {
 					let json = JSON.parse(message.body);

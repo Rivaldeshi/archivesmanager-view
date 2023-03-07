@@ -156,7 +156,7 @@ export class ExportComponent implements OnInit {
         this.downloadBlob(blob);
       },*/
 			(event: HttpEvent<any>) => {
-				console.log(event);
+				;
 				switch (event.type) {
 					case HttpEventType.Sent:
 						this.showSpinner = true;

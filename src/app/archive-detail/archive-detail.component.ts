@@ -44,7 +44,6 @@ export class ArchiveDetailComponent implements OnInit, OnDestroy {
       this.archiveService.getById(id).toPromise()
       .then( data => {
         this.archive = data;
-        console.log(data)
         this.setUpArchive();
       })
       .catch(err => {

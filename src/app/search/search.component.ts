@@ -157,7 +157,6 @@ export class SearchComponent implements OnInit {
     .then( data => {
       this.archives = data!;
 			this.setUpArchives();
-			console.log('ARCHIVES: ', data);
 		})
 		.catch(err => this.alertService.error(err))
     .finally( () => {
@@ -261,7 +260,6 @@ export class SearchComponent implements OnInit {
       a.size = Utils.getReadableFileSizeString(a.size);
 			a.categorie = a.category.name;
 		});
-		console.log(this.archives);
 		this.archives_tmp = this.archives;
   }
 
@@ -269,13 +267,10 @@ export class SearchComponent implements OnInit {
   searchName(name: string) {
 		this.isLoading = true;
 		this.archives = this.archives_tmp;
-		console.log('FORM VALUE: ', name)
-    console.log(this.archives[0].name, this.archives_tmp);
 		if(name.length > 0) {
       this.archives = this.archives.filter(a => {
         return a.name.toString().toLowerCase().includes(name.toString().toLowerCase())
       });
-				//console.log(a.name.toString().toLowerCase().includes(name.toString().toLowerCase()));
 
 		}
 		this.isLoading = false;
@@ -284,15 +279,10 @@ export class SearchComponent implements OnInit {
 	searchMeta(name_meta: Metadata[]=[]) {
 		this.isLoading = true;
 		this.archives = this.archives_tmp;
-		//console.log(this.archives.name)
 		this.metadatas_tmp = this.metadatas!;
-		console.log('FORM VALUE: ', name_meta)
-    console.log(this.metadatas_tmp[0].name, this.metadatas);
 		if(name_meta.length > 0) {
 			this.id_A = this.archives.filter(a => { return a.id} );
-			console.log(this.id_A);
 			this.id_M = this.metadatas!.filter( m => {return m.id});
-			console.log(this.id_M);
 			for(let i=0; i<= this.id_A.length; i++)
 			{
 				for(let j=0; j<= this.id_M.length; j++)
@@ -304,9 +294,6 @@ export class SearchComponent implements OnInit {
 					}
 				}
 			}
-
-				//console.log(a.name.toString().toLowerCase().includes(name.toString().toLowerCase()));
-
 		}
 		this.isLoading = false;
   }

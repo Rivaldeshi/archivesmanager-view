@@ -218,7 +218,6 @@ export class LogsComponent implements OnInit {
   onItemSelect(item: any) {
     this.getSearchForm["user"].setValue(item.id);
     this.selectedItem = item;
-    console.log(this.selectedItem);
   }
 
   onItemDeSelect(item: any) {

@@ -98,7 +98,6 @@ export class UserProfilComponent implements OnInit {
 
   onFileUpload(event:any) {
     const file = event.target.files[0];
-    console.log(file);
     if (!file.name.match(/.(jpg|jpeg|png|gif)$/i))
       return this.alertService.error("Ce fichier n'est pas une image");
 		const formData = new FormData();

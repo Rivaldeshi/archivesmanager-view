@@ -175,7 +175,6 @@ export class EditCategoryComponent implements OnInit {
 
   onItemSelectGroupes(item: any) {
     this.selectedItemsGroupes.push(item);
-    console.log(this.selectedItemsGroupes)
   }
 
   onItemDeSelectGroupes(item: any) {

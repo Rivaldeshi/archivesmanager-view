@@ -111,7 +111,6 @@ export class StorageService {
 			const params = {
 				typeOfFiles: types
 			};
-			console.log(types.toString());
 			return await this.httpClient
 				.get(URL.EDIT_TYPES_OF_FILES + "?types=" + types)
 				.toPromise();

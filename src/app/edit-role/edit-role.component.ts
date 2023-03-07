@@ -194,7 +194,6 @@ export class EditRoleComponent implements OnInit {
 			this.selectedPrivilege = this.selectedPrivilege.filter(
 				x => x.id !== id
 			);
-			console.log(this.selectedPrivilege);
 		}
 	}
 

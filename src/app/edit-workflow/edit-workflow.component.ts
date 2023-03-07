@@ -119,7 +119,6 @@ export class EditWorkflowComponent implements OnInit {
 			if (!this.getAddForm["password"].value) this.passwordError = true;
 			return;
 		}
-		console.log(this.getAddForm["date"].value, this.today);
 		if (this.getAddForm["date"].value <= this.today) {
 			if (this.getAddForm["time"].value <= this.hour) {
 				this.alertService.error(

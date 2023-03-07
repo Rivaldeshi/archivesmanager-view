@@ -64,7 +64,6 @@ export class CategoryComponent implements OnInit {
 
 	//This function is used by dataTable to filter elements
 	search(term: string) {
-		console.log(this.data);
 		if (!term) {
 			this.data = this.allCategories;
 		} else {

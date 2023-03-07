@@ -36,7 +36,7 @@ export class UsersComponent implements OnInit {
   blockLoading = false;
   private alert: AlertService;
   groups: Group[] = [];
-  pages: any =[5,10,25];
+  pages: any = [5, 10, 25];
 
   convertedJson: string;
 
@@ -50,6 +50,8 @@ export class UsersComponent implements OnInit {
     private groupService: GroupService
   ) {
     this.alert = alertService;
+
+
   }
 
   async ngOnInit() {
@@ -78,18 +80,28 @@ export class UsersComponent implements OnInit {
 
   //This function is used to get users
   async getUsers() {
-    await this.userService
-      .getUsers()
-      .toPromise()
-      .then((data: User[]|undefined) => {
-        this.data = data!;
-        this.allUsers = data!;
+    await this.userService.getUsers().subscribe({
+      next: (data: User[]) => {
+        this.data = data;
+        this.allUsers = data;
         this.mainLoading = false;
-      })
-      .catch((err: HttpErrorResponse) => {
+      },
+      error: (err: HttpErrorResponse) => {
         this.alert.error("" + err);
         this.mainLoading = false;
-      });
+      }
+    });
+
+    //   .then((data: User[] | undefined) => {
+
+    //   console.log(data);
+    //   this.allUsers = data!;
+    //   this.mainLoading = false;
+    // })
+    //   .catch((err: HttpErrorResponse) => {
+    //     this.alert.error("" + err);
+    //     this.mainLoading = false;
+    //   });
   }
 
   //this function is used to block/deblock user
@@ -114,7 +126,6 @@ export class UsersComponent implements OnInit {
 
   //This function is used by dataTable to filter elements
   search(term: string) {
-    console.log(this.roles);
     if (!term) {
       this.data = this.allUsers;
     } else {
@@ -183,20 +194,20 @@ export class UsersComponent implements OnInit {
     };
   }
 
-  async enrolGroupOfUser(jsonData:any) {
+  async enrolGroupOfUser(jsonData: any) {
     let data = JSON.parse(jsonData);
     const userList: { firstName: any; lastName: any; email: any; login: any; password: any; telephone: any; grade: any; isBlocked: boolean; groups: Group[]; roles: Role[]; }[] = [];
 
-    data.forEach((data1:any) => {
+    data.forEach((data1: any) => {
       // USER ROLE
       let userRoles: Role[] = [];
-      data1.roles.split(",").forEach((role:any) => {
+      data1.roles.split(",").forEach((role: any) => {
         userRoles.push(this.roles.filter((r) => r.name == role)[0]);
       });
 
       // USER GROUPS
       let userGroups: Group[] = [];
-      data1.groups.split(",").forEach((group:any) => {
+      data1.groups.split(",").forEach((group: any) => {
         userGroups.push(this.groups.filter((r) => r.name == group)[0]);
       });
 

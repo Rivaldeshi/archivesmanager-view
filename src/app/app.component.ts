@@ -94,7 +94,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.loadResourceService
       .exportToZip(this.param)
       .subscribe((event: HttpEvent<any>) => {
-        console.log(event);
+        ;
         switch (event.type) {
           case HttpEventType.Sent:
             break;

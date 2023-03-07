@@ -78,7 +78,6 @@ export class UserService {
         groups: groups,
         roles: roles,
       };
-      console.log(groups, roles);
       return await this.httpClient.post(URL.ADD_USER, params).toPromise();
     } else {
       return false;

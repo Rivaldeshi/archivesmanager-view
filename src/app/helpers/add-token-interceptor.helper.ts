@@ -18,7 +18,6 @@ export class AddTokenInterceptor implements HttpInterceptor {
         withCredentials: false
 			});
     }
-    console.log(request);
     return next.handle(request);
   }
 }
