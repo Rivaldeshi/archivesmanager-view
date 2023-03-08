@@ -17,7 +17,7 @@ import { Role } from "../models/role.model";
 export class RoleComponent implements OnInit {
   allRoles: Role[] = [];
   data: Role[] = [];
-  role: Role;
+  role: Role = new Role;
   idToDelete: number;
   returnUrl: string;
   showDeleteRoleModal = false;

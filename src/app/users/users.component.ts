@@ -23,7 +23,7 @@ export class UsersComponent implements OnInit {
   allUsers: User[] = [];
   data: User[] = [];
   roles: Role[] = [];
-  user: User;
+  user: User= new User;
   idToDelete: number;
   returnUrl: string;
   showDeleteUserModal = false;
@@ -54,14 +54,14 @@ export class UsersComponent implements OnInit {
 
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     // get return url from route parameters or default to '/'
     this.returnUrl =
       this.route.snapshot.queryParams["returnUrl"] || "/admin/role";
     this.getRoles();
     this.getUsers();
-    this.canEdit = await this.authService.hasPrivilege(22);
-    this.canBlock = await this.authService.hasPrivilege(24);
+    // this.canEdit = await this.authService.hasPrivilege(22);
+    // this.canBlock = await this.authService.hasPrivilege(24);
     this.getGroups();
   }
 
@@ -79,8 +79,8 @@ export class UsersComponent implements OnInit {
   }
 
   //This function is used to get users
-  async getUsers() {
-    await this.userService.getUsers().subscribe({
+  getUsers() {
+    this.userService.getUsers().subscribe({
       next: (data: User[]) => {
         this.data = data;
         this.allUsers = data;
@@ -91,17 +91,6 @@ export class UsersComponent implements OnInit {
         this.mainLoading = false;
       }
     });
-
-    //   .then((data: User[] | undefined) => {
-
-    //   console.log(data);
-    //   this.allUsers = data!;
-    //   this.mainLoading = false;
-    // })
-    //   .catch((err: HttpErrorResponse) => {
-    //     this.alert.error("" + err);
-    //     this.mainLoading = false;
-    //   });
   }
 
   //this function is used to block/deblock user

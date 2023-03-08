@@ -14,7 +14,7 @@ import { AlertService } from "../services/alert.service";
 	styleUrls: ["./show-category.component.scss"]
 })
 export class ShowCategoryComponent implements OnInit {
-	category: Category;
+	category: Category = new Category;
 	archiveFilter: any = {
 		name: "",
 		categorie: "",

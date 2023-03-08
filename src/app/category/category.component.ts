@@ -18,7 +18,7 @@ import { GroupService } from "../services/group.service";
 export class CategoryComponent implements OnInit {
 	allCategories: Category[] = [];
 	data: Category[] = [];
-	category: Category;
+	category: Category = new Category;
 	idToDelete: number;
 	returnUrl: string;
 	showDeleteCategoryModal = false;
