@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule, Routes } from "@angular/router";
 
@@ -81,6 +81,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { FileTypeComponent } from './file-type/file-type.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { AaaComponent } from './aaa/aaa.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 const appRoutes: Routes = [
 	{ path: "", component: LoginComponent },
@@ -411,7 +412,13 @@ const customNotifierOptions: NotifierOptions = {
     NgxPaginationModule,
     AngularMultiSelectModule,
 		NgMultiSelectDropDownModule,
-		AutocompleteLibModule
+		AutocompleteLibModule,
+  ServiceWorkerModule.register('ngsw-worker.js', {
+    enabled: !isDevMode(),
+    // Register the ServiceWorker as soon as the application is stable
+    // or after 30 seconds (whichever comes first).
+    registrationStrategy: 'registerWhenStable:30000'
+  })
   ],
   providers: [
     UserService,
