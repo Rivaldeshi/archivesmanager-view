@@ -27,6 +27,8 @@ export class AppComponent implements OnInit, OnDestroy {
   private param: string[] = [];
   showNavBarAndFooter = false;
   private sub: Subscription;
+  isPWA: boolean;
+
 
   constructor(
     private authService: AuthenticationService,
@@ -37,7 +39,27 @@ export class AppComponent implements OnInit, OnDestroy {
   ) { }
 
 
+
+
   ngOnInit() {
+    this.detectPWA();
+
+
+    if (navigator.onLine) {
+      // User is online
+      console.log('User is online');
+    } else {
+      // User is offline
+      console.log('User is offline');
+    }
+
+    if (this.isPWA) {
+      const hasCompletedOnboarding = false;
+      if (!hasCompletedOnboarding) {
+        this.router.navigate(['/onboarding']);
+      }
+    }
+
     this.sub = this.router.events
       .subscribe((event) => {
         if (event instanceof NavigationEnd) {
@@ -147,5 +169,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onClose(event: Event) {
     this.authService.logout();
+  }
+
+  detectPWA() {
+    const mediaQuery = '(display-mode: standalone)';
+    if (window.matchMedia && window.matchMedia(mediaQuery).matches) {
+      this.isPWA = true;
+    } else {
+      this.isPWA = false;
+    }
   }
 }

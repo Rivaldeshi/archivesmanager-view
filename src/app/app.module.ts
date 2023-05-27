@@ -82,12 +82,16 @@ import { FileTypeComponent } from './file-type/file-type.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { AaaComponent } from './aaa/aaa.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { OnboardingComponent } from './onboarding/onboarding.component';
+import { TestComponent } from './test/test.component';
 
 const appRoutes: Routes = [
 	{ path: "", component: LoginComponent },
 	{ path: "login", component: LoginComponent },
 	{ path: "logout", component: LogoutComponent },
 	{ path: "forgot-password", component: ForgotPasswordComponent },
+  { path: 'onboarding', component: OnboardingComponent },
+  { path: "test", component: TestComponent },
 	{
 		path: "home",
 		component: HomeComponent,
@@ -394,7 +398,9 @@ const customNotifierOptions: NotifierOptions = {
     EditWorkflowComponent,
     LogoutComponent,
     FileTypeComponent,
-    AaaComponent
+    AaaComponent,
+    OnboardingComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,
