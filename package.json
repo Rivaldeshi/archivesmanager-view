@@ -1,12 +1,15 @@
 {
   "name": "archivesmanager-view",
   "version": "0.0.0",
+  "licence": "MIT",
+  "main" : "main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "build:electron": "ng build && electron .",
     "start-pwa": "ng build --configuration production && http-server -p 8080 -c-1 dist/archivesmanager-view"
   },
   "private": true,
