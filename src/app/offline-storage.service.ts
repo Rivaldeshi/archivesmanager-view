@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class OfflineStorageService {
   private readonly databaseName = 'my-database';
   private readonly storeName = 'user-actions';
+  private readonly downloadedFiles = 'downloadedFiles';
 
   private db: Promise<IDBDatabase>;
 
@@ -54,6 +55,46 @@ export class OfflineStorageService {
       });
     });
   }
+
+  public storeNameofDonloadedFile(filename: string, fileId: any): Promise<void> {
+    return this.db.then((db) => {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(this.downloadedFiles, 'readwrite');
+        const store = transaction.objectStore(this.downloadedFiles);
+
+        const request = store.add({ filename, fileId });
+
+        request.onsuccess = () => {
+          resolve();
+        };
+
+        request.onerror = () => {
+          reject('Failed to add action to offline storage');
+        };
+      });
+    });
+  }
+
+
+  public checkIfFileisAlraydiDownloaded(filename: string): Promise<boolean> {
+    return this.db.then((db) => {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(this.downloadedFiles, 'readwrite');
+        const store = transaction.objectStore(this.downloadedFiles);
+
+        const request = store.getAll()
+
+        request.onsuccess = () => {
+          resolve(false);
+        };
+
+        request.onerror = () => {
+          reject('Failed to add action to offline storage');
+        };
+      });
+    });
+  }
+
 
   public flushActions(): Promise<void> {
     return this.db.then((db) => {

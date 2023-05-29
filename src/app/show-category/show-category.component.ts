@@ -129,6 +129,7 @@ export class ShowCategoryComponent implements OnInit {
 	}
 
 	download(archive:any) {
+    console.log(archive);
 		this.archiveService.download(archive, archive.name + ".pdf");
 	}
 

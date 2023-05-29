@@ -5,9 +5,10 @@ import { ArchiveService } from './services/archive.service';
 import { LoadResourceService } from './services/load-resource.service';
 import { Utils } from "./app-utils";
 import { Archive } from './models/archive.model';
-import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { Router, NavigationEnd } from '@angular/router';
+import { OfflineStorageService } from './offline-storage.service';
 
 @Component({
   selector: "app-root",
@@ -35,6 +36,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private loadResourceService: LoadResourceService,
     private storageService: StorageService,
     private archiveService: ArchiveService,
+    private offlineStorageService: OfflineStorageService,
+    private httpClient: HttpClient,
     private router: Router
   ) { }
 
@@ -43,7 +46,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.detectPWA();
-
+    //  this.downloadPdfs();
 
     if (navigator.onLine) {
       // User is online
@@ -53,12 +56,6 @@ export class AppComponent implements OnInit, OnDestroy {
       console.log('User is offline');
     }
 
-    if (this.isPWA) {
-      const hasCompletedOnboarding = false;
-      if (!hasCompletedOnboarding) {
-        this.router.navigate(['/onboarding']);
-      }
-    }
 
     this.sub = this.router.events
       .subscribe((event) => {
@@ -66,6 +63,15 @@ export class AppComponent implements OnInit, OnDestroy {
           this.updateNavBarAndFooter();
         }
       });
+
+      if (!this.isPWA) {
+        //  const hasCompletedOnboarding = Boolean(localStorage.getItem('hasCompletedOnboarding'));
+        const hasCompletedOnboarding = false;
+        if (!hasCompletedOnboarding) {
+          this.router.navigate(['/onboarding']);
+        }
+      }
+
   }
 
   updateNavBarAndFooter() {
@@ -179,4 +185,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.isPWA = false;
     }
   }
+
+
+
 }

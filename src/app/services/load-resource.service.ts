@@ -67,6 +67,7 @@ export class LoadResourceService {
 
     let url = URL.PDF_RESOURCE;
     url += `?${CONST.IGNORE_LOG_PARAM}=true&category=${category}`;
+
     return this.httpClient.get(url, options);
   }
 
