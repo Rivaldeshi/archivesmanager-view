@@ -13,6 +13,7 @@ import { AlertService } from '../services/alert.service';
 import * as URL from "../app-url";
 import * as CONST from "../app-const";
 import { saveAs } from 'file-saver';
+import { ArchivesOflineService } from '../archives-ofline.service';
 @Component({
   selector: 'app-onboarding',
   templateUrl: './onboarding.component.html',
@@ -30,6 +31,7 @@ export class OnboardingComponent {
     private sharingService: SharingService,
     private offlineStorageService: OfflineStorageService,
     private httpClient: HttpClient,
+    private ArchiveOflineService : ArchivesOflineService,
     private alertService: AlertService,
     private router: Router
   ) { }
@@ -51,10 +53,13 @@ export class OnboardingComponent {
 
   downloadPdfs = async () => {
     try {
+      await this.ArchiveOflineService.clearArchive();
+
       const archives = await this.archiveService.allOfUser().toPromise();
       console.log(archives);
-      archives?.forEach((archive, i) => {
-        this.downloadPDF(archive.path, archive.category.slug)
+      archives?.forEach(async (archive, i) => {
+        this.downloadPDFCache(archive.path, archive.category.slug);
+        await this.ArchiveOflineService.addArchive(archive);
       })
     } catch (e) {
       console.log(e);
@@ -63,7 +68,7 @@ export class OnboardingComponent {
   }
 
 
-  downloadPDF(pdf: string, category: string) {
+  downloadPDFCache(pdf: string, category: string) {
 
     caches.match(pdf).then((cachedResponse) => {
       if (cachedResponse) {

@@ -11,144 +11,181 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import * as URL from "../app-url";
 import * as CONST from "../app-const";
 import { saveAs } from 'file-saver';
-
+import { ArchivesOflineService } from "../archives-ofline.service";
 @Component({
-	selector: "app-show-category",
-	templateUrl: "./show-category.component.html",
-	styleUrls: ["./show-category.component.scss"]
+  selector: "app-show-category",
+  templateUrl: "./show-category.component.html",
+  styleUrls: ["./show-category.component.scss"]
 })
 export class ShowCategoryComponent implements OnInit {
-	category: Category = new Category;
-	archiveFilter: any = {
-		name: "",
-		categorie: "",
-		date: "",
-		size: "",
-		archivistName: ""
-	};
-	archives: any[] | undefined = [];
-	allCategories: string[] = [];
-	private static GROUP_SESSION_NAME: string = "current_category";
+  category: Category = new Category;
+  archiveFilter: any = {
+    name: "",
+    categorie: "",
+    date: "",
+    size: "",
+    archivistName: ""
+  };
+  archives: any[] | undefined = [];
+  allCategories: string[] = [];
+  private static GROUP_SESSION_NAME: string = "current_category";
 
-	canDownload = false;
-	canDelete = false;
+  canDownload = false;
+  canDelete = false;
 
-	//used by view
-	p:any;
+  //used by view
+  p: any;
 
-	constructor(
-		private sharingService: SharingService,
-		private archiveService: ArchiveService,
-		private metadataService: MetadataService,
-		private categoryService: CategoryService,
-		private alertService: AlertService,
+  constructor(
+    private sharingService: SharingService,
+    private archiveService: ArchiveService,
+    private metadataService: MetadataService,
+    private categoryService: CategoryService,
+    private alertService: AlertService,
+    private ArchivesOflineService: ArchivesOflineService,
     private httpClient: HttpClient,
-		private authService: AuthenticationService
-	) {}
+    private authService: AuthenticationService
+  ) { }
 
-	async ngOnInit() {
-		this.authService.hasPrivilege(13).then(bool => {
-			this.canDownload = bool;
-		});
+  async ngOnInit() {
+    if (navigator.onLine) {
+      this.authService.hasPrivilege(13).then(bool => {
+        this.canDownload = bool;
+      });
 
-		this.authService.hasPrivilege(15).then(bool => {
-			this.canDelete = bool;
-		});
+      this.authService.hasPrivilege(15).then(bool => {
+        this.canDelete = bool;
+      });
+    }
 
-		this.category = this.sharingService.getData<Category>();
-		if(this.category == null){
-			this.category = new Category();
-			this.category.id = 0;
-			this.category.name = 'Toute les catégories';
-			this.category.description = 'Une fusion de toute les catégorie';
-		}
+    this.category = this.sharingService.getData<Category>();
+    if (this.category == null) {
+      this.category = new Category();
+      this.category.id = 0;
+      this.category.name = 'Toute les catégories';
+      this.category.description = 'Une fusion de toute les catégorie';
+    }
 
-		if (this.category.id === 0) {
-			this.categoryService
-				.getCategories()
-				.toPromise()
-				.then((data: Category[]|undefined) => {
-					data!.forEach(category => {
-						this.allCategories.push(category.name);
-					});
-				})
-				.catch(err =>
-					this.alertService.error(
-						"Une erreur est survenue lors du retrait des données"
-					)
-				);
-		} else {
-			this.allCategories.push(this.category.name);
-		}
+    if (this.category.id === 0) {
+      if (navigator.onLine) {
+        this.categoryService
+          .getCategories()
+          .toPromise()
+          .then((data: Category[] | undefined) => {
+            data!.forEach(category => {
+              this.allCategories.push(category.name);
+            });
+          })
+          .catch(err =>
+            this.alertService.error(
+              "Une erreur est survenue lors du retrait des données"
+            )
+          );
+      } else {
+        this.ArchivesOflineService.getAllCategories().then((data: Category[] | undefined) => {
+          data!.forEach(category => {
+            this.allCategories.push(category.name);
+          });
+        })
+          .catch(err =>
+            this.alertService.error(
+              "Une erreur est survenue lors du retrait des données"
+            )
+          );
+      }
+    } else {
+      this.allCategories.push(this.category.name);
+    }
 
-		if (this.category) {
-			sessionStorage.setItem(
-				ShowCategoryComponent.GROUP_SESSION_NAME,
-				JSON.stringify(this.category)
-			);
-		} else {
-			this.category = JSON.parse(
-				sessionStorage.getItem(ShowCategoryComponent.GROUP_SESSION_NAME)!
-			);
-		}
+    if (this.category) {
+      sessionStorage.setItem(
+        ShowCategoryComponent.GROUP_SESSION_NAME,
+        JSON.stringify(this.category)
+      );
+    } else {
+      this.category = JSON.parse(
+        sessionStorage.getItem(ShowCategoryComponent.GROUP_SESSION_NAME)!
+      );
+    }
 
-		if (!this.category) {
-			this.category = new Category();
-			this.category.id = 0;
-			this.category.name = "Toute les catégories";
-			this.category.description = "Une fusion de toute les catégories";
-		}
+    if (!this.category) {
+      this.category = new Category();
+      this.category.id = 0;
+      this.category.name = "Toute les catégories";
+      this.category.description = "Une fusion de toute les catégories";
+    }
+    if (navigator.onLine) {
+      const archives = await this.archiveService.allOfUser().toPromise();
 
-		if (this.category.id > 0)
-			this.archives = await this.archiveService
-				.allOfCategory(this.category.id)
-				.toPromise();
-		else this.archives = await this.archiveService.allOfUser().toPromise();
+      if (this.category.id > 0) {
 
-		this.setUpArchives();
-	}
+        this.archives = await this.archiveService
+          .allOfCategory(this.category.id)
+          .toPromise();
+      }
+      else this.archives = archives
 
-	private async setUpArchives() {
-		this.archives!.forEach(async (a, i) => {
-			a.size = Utils.getReadableFileSizeString(a.size);
-			a.date = new Date(a.createdAt).toLocaleDateString();
-			a.categorie = a.category.name;
-			let metadataValues = await this.metadataService
-				.getMetadataValues(a.id)
-				.toPromise();
-			metadataValues!.forEach(mv => {
-				let name = mv.metadata.name,
-					val = mv.value;
-				a[name] = val;
-			});
-		});
-	}
+      await this.ArchivesOflineService.clearArchive();
+      archives?.forEach(async (a) => {
+        await this.ArchivesOflineService.addArchive(a);
+      })
+    } else {
+      if (this.category.id > 0) {
 
-	onDateFilterChange(val:any) {
-		if (val !== null && val !== undefined && val !== "") {
-			let d = new Date(val);
-			this.archiveFilter.date = d.toLocaleDateString();
-		} else {
-			this.archiveFilter.date = "";
-		}
-	}
+        this.archives = await this.archiveService
+          .allOfCategory(this.category.id)
+          .toPromise();
+      }
+      else this.archives = await this.archiveService.allOfUser().toPromise();
+    }
 
-	download(archive:any) {
+    this.setUpArchives();
+
+  }
+
+  private async setUpArchives() {
+    this.archives!.forEach(async (a, i) => {
+      a.size = Utils.getReadableFileSizeString(a.size);
+      a.date = new Date(a.createdAt).toLocaleDateString();
+      a.categorie = a.category.name;
+      if (navigator.onLine) {
+        let metadataValues = await this.metadataService
+          .getMetadataValues(a.id)
+          .toPromise();
+        metadataValues!.forEach(mv => {
+          let name = mv.metadata.name,
+            val = mv.value;
+          a[name] = val;
+        });
+      }
+    });
+  }
+
+  onDateFilterChange(val: any) {
+    if (val !== null && val !== undefined && val !== "") {
+      let d = new Date(val);
+      this.archiveFilter.date = d.toLocaleDateString();
+    } else {
+      this.archiveFilter.date = "";
+    }
+  }
+
+  download(archive: any) {
     //console.log(archive);
-	//	this.archiveService.download(archive, archive.name + ".pdf");
+    //	this.archiveService.download(archive, archive.name + ".pdf");
     this.downloadPDF(archive.path, archive.category.slug)
-	}
+  }
 
 
-	delete(archive:any) {
-		this.archiveService.delete(archive.id).subscribe(() => {
-			this.archives!.forEach((a, i) => {
-				if (a.id === archive.id) {
-					this.archives!.splice(i, 1);
-				}
-			});
-		});
-	}
+  delete(archive: any) {
+    this.archiveService.delete(archive.id).subscribe(() => {
+      this.archives!.forEach((a, i) => {
+        if (a.id === archive.id) {
+          this.archives!.splice(i, 1);
+        }
+      });
+    });
+  }
 
 
   downloadPDF(pdf: string, category: string) {

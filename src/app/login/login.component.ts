@@ -44,15 +44,17 @@ export class LoginComponent implements OnInit {
   }
 
   redirect() {
-    let nextUrl =  localStorage.getItem(CONST.CURRENT_URL_SESSION_VARNAME);
+    let nextUrl = localStorage.getItem(CONST.CURRENT_URL_SESSION_VARNAME);
     localStorage.removeItem(CONST.CURRENT_URL_SESSION_VARNAME);
-
+    if(!navigator.onLine){
+      this.router.navigate(["/home"]);
+    }
     let returnUrl = this.route.snapshot.queryParams["returnUrl"];
     if (returnUrl) {
       this.router.navigate([returnUrl]);
-    } else if(nextUrl){
+    } else if (nextUrl) {
       this.router.navigate([nextUrl]);
-    }else if (this.authenticationService.isAdmin())
+    } else if (this.authenticationService.isAdmin())
       this.router.navigate(["/admin/home"]);
     else this.router.navigate(["/home"]);
   }
@@ -88,19 +90,26 @@ export class LoginComponent implements OnInit {
 
   publicLogin() {
     this.publicLoading = true;
-
-    this.authenticationService
-      .login(PUBLIC_USER_LOGIN, PUBLIC_USER_PASSWORD)
-      .then((loggedIn: boolean) => {
-        if (loggedIn) {
-          this.redirect();
-        } else {
-          this.alertService.error("La connection anonyme a été désactivé !");
-        }
-      })
-      .catch((err) => this.alertService.error("Une erreur est survenue !"))
-      .finally(() => {
-        this.loading = false;
-      });
+    if (navigator.onLine) {
+      this.authenticationService
+        .login(PUBLIC_USER_LOGIN, PUBLIC_USER_PASSWORD)
+        .then((loggedIn: boolean) => {
+          if (loggedIn) {
+            this.redirect();
+          } else {
+            this.alertService.error("La connection anonyme a été désactivé !");
+          }
+        })
+        .catch((err) => this.alertService.error("Une erreur est survenue !"))
+        .finally(() => {
+          this.loading = false;
+        });
+    } else {
+      console.log("hgdsahgshgd")
+      this.router.navigate(["/home"]);
+      this.redirect();
+    }
+    console.log(navigator.onLine)
   }
+
 }

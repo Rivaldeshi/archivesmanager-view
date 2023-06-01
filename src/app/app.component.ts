@@ -52,10 +52,10 @@ export class AppComponent implements OnInit, OnDestroy {
     //  this.downloadPdfs();
 
     if (navigator.onLine) {
-      // User is online
+
       console.log('User is online');
     } else {
-      // User is offline
+
       console.log('User is offline');
     }
 
