@@ -69,7 +69,7 @@ export class OnboardingComponent {
       if (cachedResponse) {
         console.log("Ce document des deja dans le cache")
         cachedResponse.blob().then((blob) => {
-          saveAs(blob, pdf); // Enregistrer le fichier PDF localement
+          //saveAs(blob, pdf); // Enregistrer le fichier PDF localement
         });
       } else {
         const options: {
@@ -101,7 +101,7 @@ export class OnboardingComponent {
             const cacheResponse = new Response(response);
             cache.put(pdf, cacheResponse);
           });
-          saveAs(response, pdf);  // Specify the desired file name and location
+          //saveAs(response, pdf);  // Specify the desired file name and location
         });
 
       }
