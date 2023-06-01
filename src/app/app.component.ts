@@ -11,6 +11,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { OfflineStorageService } from './offline-storage.service';
 import { PUBLIC_USER_LOGIN, PUBLIC_USER_PASSWORD } from './app-const';
 import { AlertService } from './services/alert.service';
+//import { NavigationRoute } from 'workbox-routing';
 
 @Component({
   selector: "app-root",
