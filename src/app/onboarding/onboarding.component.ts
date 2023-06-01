@@ -54,8 +54,6 @@ export class OnboardingComponent {
       const archives = await this.archiveService.allOfUser().toPromise();
       console.log(archives);
       archives?.forEach((archive, i) => {
-
-        console.log('I = ', i);
         this.downloadPDF(archive.path, archive.category.slug)
       })
     } catch (e) {
@@ -64,46 +62,51 @@ export class OnboardingComponent {
     }
   }
 
-  download(archive: any) {
-    this.archiveService.download(archive, archive.name + ".pdf");
 
-
-
-
-  }
   downloadPDF(pdf: string, category: string) {
 
-    const options: {
-      headers?: HttpHeaders | {
-        [header: string]: string | string[];
-      };
-      observe?: "body";
-      params?: HttpParams | {
-        [param: string]: string | string[];
-      };
-      reportProgress?: boolean;
-      responseType: "blob";
-      withCredentials?: boolean;
-    } = {
-      headers: {
-        'response-type': 'blob',
+    caches.match(pdf).then((cachedResponse) => {
+      if (cachedResponse) {
+        console.log("Ce document des deja dans le cache")
+        cachedResponse.blob().then((blob) => {
+          saveAs(blob, pdf); // Enregistrer le fichier PDF localement
+        });
+      } else {
+        const options: {
+          headers?: HttpHeaders | {
+            [header: string]: string | string[];
+          };
+          observe?: "body";
+          params?: HttpParams | {
+            [param: string]: string | string[];
+          };
+          reportProgress?: boolean;
+          responseType: "blob";
+          withCredentials?: boolean;
+        } = {
+          headers: {
+            'response-type': 'blob',
+          },
+          params: {
+            'pdf': pdf
+          },
+          responseType: 'blob',
+        }
 
-      },
-      params: {
-        'pdf': pdf
-      },
-      responseType: 'blob',
+        let url = URL.PDF_RESOURCE;
+        url += `?${CONST.IGNORE_LOG_PARAM}=true&category=${category}`;
+        this.httpClient.get(url, options).subscribe((response: Blob) => {
+          console.log(response)
+          caches.open('pdfCache').then((cache) => {
+            const cacheResponse = new Response(response);
+            cache.put(pdf, cacheResponse);
+          });
+          saveAs(response, pdf);  // Specify the desired file name and location
+        });
 
-    }
-
-    let url = URL.PDF_RESOURCE;
-    url += `?${CONST.IGNORE_LOG_PARAM}=true&category=${category}`;
-    this.httpClient.get(url, options).subscribe((response: Blob) => {
-      console.log(response)
-      saveAs(response, pdf);  // Specify the desired file name and location
+      }
     });
-
+    localStorage.setItem('hasCompletedOnboarding','true')
   }
-
 
 }

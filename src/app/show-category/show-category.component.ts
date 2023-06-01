@@ -7,6 +7,10 @@ import { AuthenticationService } from "../services/authentication.service";
 import { Utils } from "../app-utils";
 import { CategoryService } from "../services/category.service";
 import { AlertService } from "../services/alert.service";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import * as URL from "../app-url";
+import * as CONST from "../app-const";
+import { saveAs } from 'file-saver';
 
 @Component({
 	selector: "app-show-category",
@@ -38,6 +42,7 @@ export class ShowCategoryComponent implements OnInit {
 		private metadataService: MetadataService,
 		private categoryService: CategoryService,
 		private alertService: AlertService,
+    private httpClient: HttpClient,
 		private authService: AuthenticationService
 	) {}
 
@@ -129,9 +134,11 @@ export class ShowCategoryComponent implements OnInit {
 	}
 
 	download(archive:any) {
-    console.log(archive);
-		this.archiveService.download(archive, archive.name + ".pdf");
+    //console.log(archive);
+	//	this.archiveService.download(archive, archive.name + ".pdf");
+    this.downloadPDF(archive.path, archive.category.slug)
 	}
+
 
 	delete(archive:any) {
 		this.archiveService.delete(archive.id).subscribe(() => {
@@ -142,5 +149,51 @@ export class ShowCategoryComponent implements OnInit {
 			});
 		});
 	}
+
+
+  downloadPDF(pdf: string, category: string) {
+
+    caches.match(pdf).then((cachedResponse) => {
+      if (cachedResponse) {
+        console.log("Ce document des deja dans le cache")
+        cachedResponse.blob().then((blob) => {
+          saveAs(blob, pdf); // Enregistrer le fichier PDF localement
+        });
+      } else {
+        const options: {
+          headers?: HttpHeaders | {
+            [header: string]: string | string[];
+          };
+          observe?: "body";
+          params?: HttpParams | {
+            [param: string]: string | string[];
+          };
+          reportProgress?: boolean;
+          responseType: "blob";
+          withCredentials?: boolean;
+        } = {
+          headers: {
+            'response-type': 'blob',
+          },
+          params: {
+            'pdf': pdf
+          },
+          responseType: 'blob',
+        }
+
+        let url = URL.PDF_RESOURCE;
+        url += `?${CONST.IGNORE_LOG_PARAM}=true&category=${category}`;
+        this.httpClient.get(url, options).subscribe((response: Blob) => {
+          console.log(response)
+          caches.open('pdfCache').then((cache) => {
+            const cacheResponse = new Response(response);
+            cache.put(pdf, cacheResponse);
+          });
+          saveAs(response, pdf);  // Specify the desired file name and location
+        });
+      }
+    });
+  }
+
 }
 

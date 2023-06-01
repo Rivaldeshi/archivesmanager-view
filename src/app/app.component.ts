@@ -9,6 +9,8 @@ import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { Router, NavigationEnd } from '@angular/router';
 import { OfflineStorageService } from './offline-storage.service';
+import { PUBLIC_USER_LOGIN, PUBLIC_USER_PASSWORD } from './app-const';
+import { AlertService } from './services/alert.service';
 
 @Component({
   selector: "app-root",
@@ -36,6 +38,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private loadResourceService: LoadResourceService,
     private storageService: StorageService,
     private archiveService: ArchiveService,
+    private alertService: AlertService,
     private offlineStorageService: OfflineStorageService,
     private httpClient: HttpClient,
     private router: Router
@@ -64,13 +67,27 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
 
-      if (!this.isPWA) {
-        //  const hasCompletedOnboarding = Boolean(localStorage.getItem('hasCompletedOnboarding'));
-        const hasCompletedOnboarding = false;
-        if (!hasCompletedOnboarding) {
-          this.router.navigate(['/onboarding']);
-        }
-      }
+    if (this.isPWA) {
+      this.authService
+        .login(PUBLIC_USER_LOGIN, PUBLIC_USER_PASSWORD)
+        .then((loggedIn: boolean) => {
+          console.log(loggedIn)
+          if (loggedIn) {
+            const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding') != null;
+            if (!hasCompletedOnboarding) {
+              this.router.navigate(['/onboarding']);
+            } else {
+              this.router.navigate(['/home']);
+            }
+
+          } else {
+            this.alertService.error("La connection anonyme a été désactivé !");
+          }
+        })
+        .catch((err) => this.alertService.error("Une erreur est survenue !"))
+
+
+    }
 
   }
 
