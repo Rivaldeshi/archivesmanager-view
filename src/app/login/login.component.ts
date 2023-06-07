@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { PUBLIC_USER_LOGIN, PUBLIC_USER_PASSWORD } from "../app-const";
 import * as CONST from "../app-const";
+import { ArchivesOflineService } from "../archives-ofline.service";
 
 @Component({
   selector: "app-login",
@@ -24,6 +25,7 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
+    private ArchivesOflineService: ArchivesOflineService,
     private alertService: AlertService
   ) {
     let deconnection = this.route.snapshot.queryParams["action"];
@@ -46,9 +48,6 @@ export class LoginComponent implements OnInit {
   redirect() {
     let nextUrl = localStorage.getItem(CONST.CURRENT_URL_SESSION_VARNAME);
     localStorage.removeItem(CONST.CURRENT_URL_SESSION_VARNAME);
-    if(!navigator.onLine){
-      this.router.navigate(["/home"]);
-    }
     let returnUrl = this.route.snapshot.queryParams["returnUrl"];
     if (returnUrl) {
       this.router.navigate([returnUrl]);
@@ -88,9 +87,10 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  publicLogin() {
+  async publicLogin() {
     this.publicLoading = true;
-    if (navigator.onLine) {
+    if (await this.ArchivesOflineService.navigatorOnline()) {
+      console.log("dsjhdshjdsdsdsdsdsdshhhhhhhhhhhhhhhhhhhhhhh")
       this.authenticationService
         .login(PUBLIC_USER_LOGIN, PUBLIC_USER_PASSWORD)
         .then((loggedIn: boolean) => {
@@ -109,7 +109,6 @@ export class LoginComponent implements OnInit {
       this.router.navigate(["/home"]);
       this.redirect();
     }
-    console.log(navigator.onLine)
   }
 
 }

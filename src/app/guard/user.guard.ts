@@ -8,6 +8,7 @@ import {
 import { Observable } from "rxjs";
 import { AuthenticationService } from "../services/authentication.service";
 import { AlertService } from "../services/alert.service";
+import { ArchivesOflineService } from "../archives-ofline.service";
 
 @Injectable({
   providedIn: "root"
@@ -17,6 +18,7 @@ export class UserGuard implements CanActivate {
   constructor(
     private router: Router,
     private authService: AuthenticationService,
+    private ArchivesOflineService : ArchivesOflineService,
     private alertService: AlertService
   ) {
     this.alert = alertService;
@@ -26,21 +28,19 @@ export class UserGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    if (navigator.onLine) {
-      if (this.authService.isLogged() && !this.authService.isAdmin()) {
-        return true;
-      }
 
-      this.alertService.warning("Désolé. Vous n'avez pas accès à cette page !");
-      if (this.authService.isLogged() && this.authService.isAdmin())
-        this.router.navigate(["/admin/home"], {
-          queryParams: { returnUrl: state.url }
-        });
-      else
-        this.router.navigate(["/login"], { queryParams: { returnUrl: state.url } });
-      return false;
-    }else{
-      return true;
-    }
+      // if (this.authService.isLogged() && !this.authService.isAdmin()) {
+      //   return true;
+      // }
+
+      // this.alertService.warning("Désolé. Vous n'avez pas accès à cette page !");
+      // if (this.authService.isLogged() && this.authService.isAdmin())
+      //   this.router.navigate(["/admin/home"], {
+      //     queryParams: { returnUrl: state.url }
+      //   });
+      // else
+      //   this.router.navigate(["/login"], { queryParams: { returnUrl: state.url } });
+      // return false;
+  return true
   }
 }

@@ -48,7 +48,7 @@ export class ShowCategoryComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    if (navigator.onLine) {
+    if (await this.ArchivesOflineService.navigatorOnline()) {
       this.authService.hasPrivilege(13).then(bool => {
         this.canDownload = bool;
       });
@@ -56,6 +56,8 @@ export class ShowCategoryComponent implements OnInit {
       this.authService.hasPrivilege(15).then(bool => {
         this.canDelete = bool;
       });
+    }else{
+      this.canDownload=true;
     }
 
     this.category = this.sharingService.getData<Category>();
@@ -67,7 +69,7 @@ export class ShowCategoryComponent implements OnInit {
     }
 
     if (this.category.id === 0) {
-      if (navigator.onLine) {
+      if (await this.ArchivesOflineService.navigatorOnline()) {
         this.categoryService
           .getCategories()
           .toPromise()
@@ -114,7 +116,7 @@ export class ShowCategoryComponent implements OnInit {
       this.category.name = "Toute les catégories";
       this.category.description = "Une fusion de toute les catégories";
     }
-    if (navigator.onLine) {
+    if (await this.ArchivesOflineService.navigatorOnline()) {
       const archives = await this.archiveService.allOfUser().toPromise();
 
       if (this.category.id > 0) {
@@ -132,11 +134,9 @@ export class ShowCategoryComponent implements OnInit {
     } else {
       if (this.category.id > 0) {
 
-        this.archives = await this.archiveService
-          .allOfCategory(this.category.id)
-          .toPromise();
+        this.archives = await this.ArchivesOflineService.getAllAChives();
       }
-      else this.archives = await this.archiveService.allOfUser().toPromise();
+      else this.archives = await this.ArchivesOflineService.getAllAChives();
     }
 
     this.setUpArchives();
@@ -148,7 +148,7 @@ export class ShowCategoryComponent implements OnInit {
       a.size = Utils.getReadableFileSizeString(a.size);
       a.date = new Date(a.createdAt).toLocaleDateString();
       a.categorie = a.category.name;
-      if (navigator.onLine) {
+      if (await this.ArchivesOflineService.navigatorOnline()) {
         let metadataValues = await this.metadataService
           .getMetadataValues(a.id)
           .toPromise();
@@ -191,8 +191,9 @@ export class ShowCategoryComponent implements OnInit {
   downloadPDF(pdf: string, category: string) {
 
     caches.match(pdf).then((cachedResponse) => {
+
+
       if (cachedResponse) {
-        console.log("Ce document des deja dans le cache")
         cachedResponse.blob().then((blob) => {
           saveAs(blob, pdf); // Enregistrer le fichier PDF localement
         });

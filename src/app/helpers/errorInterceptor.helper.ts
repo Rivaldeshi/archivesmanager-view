@@ -20,64 +20,66 @@ export class ErrorInterceptor implements HttpInterceptor {
     private authService: AuthenticationService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-		request = request.clone({
-			withCredentials: false
-		});
-		sessionStorage.setItem(ErrorInterceptor.CUR_REQ_SESSION_VARNAME, JSON.stringify(request));
-		return next.handle(request)
-		.pipe(map( (data) => {
-			return data;
-		}))
-		.pipe(catchError( (err) => {
-			// We don't want to refresh token for some requests like login or refresh token itself
-			// So we verify url and we throw an error if it's the case
-			if (request.url.includes(URL.OAUTH_TOKEN)) {
-				if (request.body.grant_type == 'refresh_token') {
-					return this.logout();
-				}
-				return this.errorToMessage(err);
-			}
+		// request = request.clone({
+		// 	withCredentials: false
+		// });
+		// sessionStorage.setItem(ErrorInterceptor.CUR_REQ_SESSION_VARNAME, JSON.stringify(request));
+		// return next.handle(request)
+		// .pipe(map( (data) => {
+		// 	return data;
+		// }))
+		// .pipe(catchError( (err) => {
+		// 	// We don't want to refresh token for some requests like login or refresh token itself
+		// 	// So we verify url and we throw an error if it's the case
+		// 	if (request.url.includes(URL.OAUTH_TOKEN)) {
+		// 		if (request.body.grant_type == 'refresh_token') {
+		// 			return this.logout();
+		// 		}
+		// 		return this.errorToMessage(err);
+		// 	}
 
-			if (request.url.includes("login")){
-				return this.errorToMessage(err);
-			}
+		// 	if (request.url.includes("login")){
+		// 		return this.errorToMessage(err);
+		// 	}
 
-			if (err && err.error && err.error.error === 'invalid_grant') {
-				if (request.body.grant_type == 'refresh_token') {
-					return this.logout();
-				}
-				return this.errorToMessage(err);
-			}
+		// 	if (err && err.error && err.error.error === 'invalid_grant') {
+		// 		if (request.body.grant_type == 'refresh_token') {
+		// 			return this.logout();
+		// 		}
+		// 		return this.errorToMessage(err);
+		// 	}
 
-			if (err && (err.status === 0 || err.status === 401)) { // auto logout if 401 response returned from api and refresh token fail
+		// 	if (err && (err.status === 0 || err.status === 401)) { // auto logout if 401 response returned from api and refresh token fail
 
-				let now = new Date();
-				let exp = this.authService.getTokenExpireDate();
-				if (now.getTime() < exp.getTime()) {
-					return this.logout();
-				}
-				ErrorInterceptor.showMessage = false;
-				return this.authService.refreshToken()
-					.then(b => {
-						if (b){
-							let targetUrl = sessionStorage.getItem(CONST.CURRENT_URL_SESSION_VARNAME);
-							let req: HttpRequest<any> = JSON.parse(sessionStorage.getItem(ErrorInterceptor.CUR_REQ_SESSION_VARNAME)!);
-							if (location.href != targetUrl){
-								this.router.navigate([targetUrl]);
-								return [];
-							}
-							return next.handle(req);
-						}else
-							return this.logout();
-					})
-					.catch(err => {
-						return this.logout();
-					});
-      }else{
-				return this.errorToMessage(err);
-			}
+		// 		let now = new Date();
+		// 		let exp = this.authService.getTokenExpireDate();
+		// 		if (now.getTime() < exp.getTime()) {
+		// 			return this.logout();
+		// 		}
+		// 		ErrorInterceptor.showMessage = false;
+		// 		return this.authService.refreshToken()
+		// 			.then(b => {
+		// 				if (b){
+		// 					let targetUrl = sessionStorage.getItem(CONST.CURRENT_URL_SESSION_VARNAME);
+		// 					let req: HttpRequest<any> = JSON.parse(sessionStorage.getItem(ErrorInterceptor.CUR_REQ_SESSION_VARNAME)!);
+		// 					if (location.href != targetUrl){
+		// 						this.router.navigate([targetUrl]);
+		// 						return [];
+		// 					}
+		// 					return next.handle(req);
+		// 				}else
+		// 					return this.logout();
+		// 			})
+		// 			.catch(err => {
+		// 				return this.logout();
+		// 			});
+    //   }else{
+		// 		return this.errorToMessage(err);
+		// 	}
 
-    }));
+    // }));
+
+     return next.handle(request);
 	}
 
 

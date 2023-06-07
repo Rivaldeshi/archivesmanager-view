@@ -45,8 +45,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
 
-  getData(hideLog: boolean) {
-    if (navigator.onLine) {
+ async getData(hideLog: boolean) {
+    if (await this.archivesOflineService.navigatorOnline()) {
       this.categoryService.getCategories(hideLog).toPromise()
         .then(async (data) => {
           if (data!.length != this.categories.length) {
@@ -71,6 +71,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     } else {
       this.archivesOflineService.getAllCategories()
         .then((data) => {
+          console.log(data)
           if (data!.length != this.categories.length) {
             //this.categories = data;
             console.log(data);
@@ -80,7 +81,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             });
           }
         })
-        .catch(err => this.alertService.error("Une erreur s'est produite lors du retrait des données"));
+        .catch(err => { console.log(err); this.alertService.error("Une erreur s'est produite lors du retrait des données")});
     }
   }
 

@@ -11,6 +11,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { OfflineStorageService } from './offline-storage.service';
 import { PUBLIC_USER_LOGIN, PUBLIC_USER_PASSWORD } from './app-const';
 import { AlertService } from './services/alert.service';
+import { ArchivesOflineService } from './archives-ofline.service';
 //import { NavigationRoute } from 'workbox-routing';
 
 @Component({
@@ -40,6 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private storageService: StorageService,
     private archiveService: ArchiveService,
     private alertService: AlertService,
+    private ArchivesOflineService :ArchivesOflineService,
     private offlineStorageService: OfflineStorageService,
     private httpClient: HttpClient,
     private router: Router
@@ -48,11 +50,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
 
-  ngOnInit() {
+ async ngOnInit() {
     this.detectPWA();
     //  this.downloadPdfs();
 
-    if (navigator.onLine) {
+    if (await this.ArchivesOflineService.navigatorOnline()) {
 
       console.log('User is online');
     } else {

@@ -37,18 +37,31 @@ export class CoverComponent implements OnInit {
   }
 
 
-  getImageFromService(cover: string) {
+  async getImageFromService(cover: string) {
     this.isImageLoading = true;
-    this.loadResourceService.loadCover(cover, this.category).toPromise()
-    .then(
-      data => { this.createImageFromBlob(data as Blob); }
-    )
-    .catch(
-      error => console.error(error)
-    )
-    .finally(
-      () => { this.isImageLoading = false; }
-    );
+    caches.match(cover).then((cachedResponse) => {
+      if (cachedResponse) {
+        cachedResponse.blob().then((blob) => {
+          this.createImageFromBlob(blob as Blob); // Enregistrer le fichier PDF localement
+        });
+      } else {
+        this.loadResourceService.loadCover(cover, this.category).toPromise()
+          .then(
+            data => {
+              this.createImageFromBlob(data as Blob);
+              caches.open('pdfCache').then((cache) => {
+                const cacheResponse = new Response(data);
+                cache.put(cover, cacheResponse);
+              });
+            }
+          )
+          .catch(
+            error => console.error(error)
+          )
+          .finally(
+            () => { this.isImageLoading = false; }
+          );
+      }
+    });
   }
-
 }

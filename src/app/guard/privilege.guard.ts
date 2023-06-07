@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { AuthenticationService } from "../services/authentication.service";
 import { AlertService } from "../services/alert.service";
 import * as CONST from "../app-const";
-
+import { ArchivesOflineService } from "../archives-ofline.service";
 @Injectable({
   providedIn: "root"
 })
@@ -13,6 +13,7 @@ export class PrivilegeGuard implements CanActivate {
   constructor(
     private authService: AuthenticationService,
     private alertService: AlertService,
+    private ArchivesOflineService : ArchivesOflineService,
     private router: Router
   ) { }
 
@@ -24,19 +25,18 @@ export class PrivilegeGuard implements CanActivate {
     let privilegeID = next.data["privilegeID"] as number;
     sessionStorage.setItem(CONST.CURRENT_URL_SESSION_VARNAME, state.url)
 
-    if (navigator.onLine) {
-      if (!this.authService.isLogged()) {
-        localStorage.setItem(CONST.CURRENT_URL_SESSION_VARNAME, state.url)
-        this.router.navigate(['logout']);
-      }
+      // if (!this.authService.isLogged()) {
+      //   localStorage.setItem(CONST.CURRENT_URL_SESSION_VARNAME, state.url)
+      //   this.router.navigate(['logout']);
+      // }
 
-      return this.authService.hasPrivilege(privilegeID, () => {
-        this.alertService.warning("Désolé. Vous n'avez pas le privilège pour effectuer cette action !");
-        if (privilegeID === 1)
-          this.router.navigate(['/logout']);
-      });
-    } else {
+      // return this.authService.hasPrivilege(privilegeID, () => {
+      //   this.alertService.warning("Désolé. Vous n'avez pas le privilège pour effectuer cette action !");
+      //   if (privilegeID === 1)
+      //     this.router.navigate(['/logout']);
+      // });
+
       return true;
-    }
+
   }
 }

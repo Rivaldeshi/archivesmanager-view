@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -12,7 +13,7 @@ export class ArchivesOflineService {
   private CategoriesTable = 'Categories'
 
 
-  constructor() {
+  constructor(private httpClient: HttpClient,) {
     this.openDatabase();
   }
 
@@ -237,7 +238,7 @@ export class ArchivesOflineService {
   }
 
 
-  clearTable(tableName:string): Promise<void> {
+  clearTable(tableName: string): Promise<void> {
     return new Promise((resolve, reject) => {
       const transaction: IDBTransaction = this.db.transaction(tableName, 'readwrite');
       const objectStore: IDBObjectStore = transaction.objectStore(tableName);
@@ -325,4 +326,28 @@ export class ArchivesOflineService {
     });
   }
 
+
+  async navigatorOnline(): Promise<boolean> {
+    try {
+      const headers = { 'SkipInterceptor': 'true' };
+      const response = await this.httpClient.get<any>('https://jsonplaceholder.typicode.com/posts/1', { headers }).toPromise();
+
+      if (response) {
+        console.log("Rival is online")
+        return true;
+
+
+      } else {
+        console.log("Rival is NNNNNNNNNNot online")
+        return false
+
+      }
+
+    } catch (error) {
+
+      return false;
+
+    }
+
+  }
 }

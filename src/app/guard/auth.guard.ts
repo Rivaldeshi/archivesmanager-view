@@ -3,7 +3,7 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '../services/authentication.service';
 import { AlertService } from '../services/alert.service';
-
+import { ArchivesOflineService } from "../archives-ofline.service";
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +13,8 @@ export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,
     private authService: AuthenticationService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private ArchivesOflineService : ArchivesOflineService,
   ) {
     this.alert = alertService;
   }
@@ -21,18 +22,16 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (navigator.onLine) {
-      if (this.authService.isLogged()) {
-        // logged in so return true
-        return true;
-      }
 
-      // not logged in so redirect to login page with the return url
-      this.alertService.warning("Vous devez être connecté avant d'accéder à cette page!");
-      this.router.navigate(['/login'], { queryParams: { returnUrl: state.url, action: true } });
-      return false;
-    } else {
-      return true;
-    }
+      // if (this.authService.isLogged()) {
+      //   // logged in so return true
+      //   return true;
+      // }
+
+      // // not logged in so redirect to login page with the return url
+      // this.alertService.warning("Vous devez être connecté avant d'accéder à cette page!");
+      // this.router.navigate(['/login'], { queryParams: { returnUrl: state.url, action: true } });
+      // return true;
+   return true
   }
 }

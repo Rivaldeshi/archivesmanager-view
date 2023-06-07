@@ -8,6 +8,7 @@ import {
 import { Observable } from "rxjs";
 import { AuthenticationService } from "../services/authentication.service";
 import { AlertService } from "../services/alert.service";
+import { ArchivesOflineService } from "../archives-ofline.service";
 
 @Injectable({
   providedIn: "root"
@@ -17,7 +18,8 @@ export class AdminGuard implements CanActivate {
   constructor(
     private router: Router,
     private authService: AuthenticationService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private ArchivesOflineService : ArchivesOflineService,
   ) {
     this.alert = alertService;
   }
@@ -26,16 +28,16 @@ export class AdminGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    if (navigator.onLine) {
-      if (this.authService.isAdmin()) {
-        return true;
-      }
 
-      this.alertService.warning("Désolé. Vous n'avez pas accès à cette page !");
-      this.router.navigate(["/admin/home"], {
-        queryParams: { returnUrl: state.url }
-      });
-      return false;
-    } else { return true }
+      // if (this.authService.isAdmin()) {
+      //   return true;
+      // }
+
+      // this.alertService.warning("Désolé. Vous n'avez pas accès à cette page !");
+      // this.router.navigate(["/admin/home"], {
+      //   queryParams: { returnUrl: state.url }
+      // });
+      // return true;
+     return true;
   }
 }
