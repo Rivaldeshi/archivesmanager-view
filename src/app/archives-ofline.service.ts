@@ -1,43 +1,53 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import * as URL from "./app-url";
+import { AuthenticationService } from "./services/authentication.service";
+import * as CONST from "./app-const";
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
 export class ArchivesOflineService {
-  private dbName = 'myDatabase';
+  private dbName = 'ArchivesManager';
   private dbVersion = 1;
   private db: IDBDatabase;
+
 
   private ArchiveTable = 'Archives'
   private CategoriesTable = 'Categories'
 
-
-  constructor(private httpClient: HttpClient,) {
-    this.openDatabase();
+  private databaseReady: Promise<void>;
+  constructor(private httpClient: HttpClient, private authService: AuthenticationService, private router: Router,) {
+    this.databaseReady = this.openDatabase();
+    this.openDatabase().then(() => {
+      console.log('Database is open!');
+    });
   }
 
-  private openDatabase(): void {
-    const request: IDBOpenDBRequest = indexedDB.open(this.dbName, this.dbVersion);
-    request.onerror = (event: Event) => {
-      console.error('IndexedDB error:', event);
-    };
-    request.onsuccess = (event: Event) => {
-      this.db = (event.target as IDBOpenDBRequest).result;
-    };
+  private openDatabase(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const request: IDBOpenDBRequest = indexedDB.open(this.dbName, this.dbVersion);
+      request.onerror = (event: Event) => {
+        console.error('IndexedDB error:', event);
+        reject();
+      };
+      request.onsuccess = (event: Event) => {
+        this.db = (event.target as IDBOpenDBRequest).result;
+        resolve();
+      };
 
-    request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
-      const db: IDBDatabase = (event.target as IDBOpenDBRequest).result;
+      request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
+        const db: IDBDatabase = (event.target as IDBOpenDBRequest).result;
 
-      if (!db.objectStoreNames.contains(this.ArchiveTable)) {
-        db.createObjectStore(this.ArchiveTable, { autoIncrement: true });
-      }
+        if (!db.objectStoreNames.contains(this.ArchiveTable)) {
+          db.createObjectStore(this.ArchiveTable, { keyPath: 'id' });
+        }
 
-      if (!db.objectStoreNames.contains(this.CategoriesTable)) {
-        db.createObjectStore(this.CategoriesTable, { autoIncrement: true });
-      }
-    };
-
+        if (!db.objectStoreNames.contains(this.CategoriesTable)) {
+          db.createObjectStore(this.CategoriesTable, { keyPath: 'id' });
+        }
+      };
+    })
 
   }
 
@@ -45,16 +55,31 @@ export class ArchivesOflineService {
     return new Promise((resolve, reject) => {
       const transaction: IDBTransaction = this.db.transaction(this.ArchiveTable, 'readwrite');
       const objectStore: IDBObjectStore = transaction.objectStore(this.ArchiveTable);
-      const request: IDBRequest = objectStore.add(archive);
 
-      request.onsuccess = (event: Event) => {
-        resolve((event.target as IDBRequest).result as number);
+      const getRequest = objectStore.get(archive.id);
+
+      getRequest.onerror = (event) => {
+        console.error('Error checking object existence:');
+        reject();
       };
 
-      request.onerror = (event: Event) => {
-        reject((event.target as IDBRequest).error);
-      };
+      getRequest.onsuccess = (event) => {
+        const existingObject = getRequest.result;
+        if (existingObject) {
+          resolve((event.target as IDBRequest).result as number); // Object already exists, resolve the promise
+        } else {
+          // Object doesn't exist, proceed with adding it
+          const request: IDBRequest = objectStore.add(archive);
 
+          request.onsuccess = (event: Event) => {
+            resolve((event.target as IDBRequest).result as number);
+          };
+
+          request.onerror = (event: Event) => {
+            reject((event.target as IDBRequest).error);
+          };
+        }
+      };
       transaction.oncomplete = (event: Event) => {
         console.log('archive added successfully');
       };
@@ -113,6 +138,36 @@ export class ArchivesOflineService {
 
         if (cursor) {
           Archives.push(cursor.value);
+          cursor.continue();
+        } else {
+          resolve(Archives);
+        }
+      };
+
+      request.onerror = (event: Event) => {
+        reject((event.target as IDBRequest).error);
+      };
+
+      transaction.oncomplete = (event: Event) => {
+        console.log('All Archives retrieved successfully');
+      };
+    });
+  }
+
+  getAllAChivesByCategory(categorieId: any): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const transaction: IDBTransaction = this.db.transaction(this.ArchiveTable, 'readonly');
+      const objectStore: IDBObjectStore = transaction.objectStore(this.ArchiveTable);
+      const request: IDBRequest = objectStore.openCursor();
+      const Archives: any[] = [];
+
+      request.onsuccess = (event: Event) => {
+        const cursor: IDBCursorWithValue = (event.target as IDBRequest).result;
+
+        if (cursor) {
+          if (cursor.value.category.id == categorieId) {
+            Archives.push(cursor.value);
+          }
           cursor.continue();
         } else {
           resolve(Archives);
@@ -230,7 +285,7 @@ export class ArchivesOflineService {
   }
 
   clearArchive(): Promise<void> {
-    return this.clearTable(this.CategoriesTable);
+    return this.clearTable(this.ArchiveTable);
   }
 
   clearCategorie(): Promise<void> {
@@ -259,30 +314,33 @@ export class ArchivesOflineService {
   }
 
   getAllCategories(): Promise<any[]> {
-    return new Promise((resolve, reject) => {
-      const transaction: IDBTransaction = this.db.transaction(this.CategoriesTable, 'readonly');
-      const objectStore: IDBObjectStore = transaction.objectStore(this.CategoriesTable);
-      const request: IDBRequest = objectStore.openCursor();
-      const Categories: any[] = [];
+    return this.databaseReady.then(() => {
+      return new Promise((resolve, reject) => {
 
-      request.onsuccess = (event: Event) => {
-        const cursor: IDBCursorWithValue = (event.target as IDBRequest).result;
+        const transaction: IDBTransaction = this.db.transaction(this.CategoriesTable, 'readonly');
+        const objectStore: IDBObjectStore = transaction.objectStore(this.CategoriesTable);
+        const request: IDBRequest = objectStore.openCursor();
+        const Categories: any[] = [];
 
-        if (cursor) {
-          Categories.push(cursor.value);
-          cursor.continue();
-        } else {
-          resolve(Categories);
-        }
-      };
+        request.onsuccess = (event: Event) => {
+          const cursor: IDBCursorWithValue = (event.target as IDBRequest).result;
 
-      request.onerror = (event: Event) => {
-        reject((event.target as IDBRequest).error);
-      };
+          if (cursor) {
+            Categories.push(cursor.value);
+            cursor.continue();
+          } else {
+            resolve(Categories);
+          }
+        };
 
-      transaction.oncomplete = (event: Event) => {
-        console.log('All Categories retrieved successfully');
-      };
+        request.onerror = (event: Event) => {
+          reject((event.target as IDBRequest).error);
+        };
+
+        transaction.oncomplete = (event: Event) => {
+          console.log('All Categories retrieved successfully');
+        };
+      })
     });
   }
 
@@ -326,6 +384,49 @@ export class ArchivesOflineService {
     });
   }
 
+  downloadPDFAndPutInCache(pdf: string, category: string) {
+
+    caches.match(pdf).then((cachedResponse) => {
+      if (cachedResponse) {
+        cachedResponse.blob().then((blob) => {
+
+        });
+      } else {
+        const options: {
+          headers?: HttpHeaders | {
+            [header: string]: string | string[];
+          };
+          observe?: "body";
+          params?: HttpParams | {
+            [param: string]: string | string[];
+          };
+          reportProgress?: boolean;
+          responseType: "blob";
+          withCredentials?: boolean;
+        } = {
+          headers: {
+            'response-type': 'blob',
+          },
+          params: {
+            'pdf': pdf
+          },
+          responseType: 'blob',
+        }
+
+        let url = URL.PDF_RESOURCE;
+        url += `?${CONST.IGNORE_LOG_PARAM}=true&category=${category}`;
+        this.httpClient.get(url, options).subscribe((response: Blob) => {
+          console.log(response)
+          caches.open('pdfCache').then((cache) => {
+            const cacheResponse = new Response(response);
+            cache.put(pdf, cacheResponse);
+          });
+        });
+
+      }
+    });
+  }
+
 
   async navigatorOnline(): Promise<boolean> {
     try {
@@ -333,20 +434,15 @@ export class ArchivesOflineService {
       const response = await this.httpClient.get<any>('https://jsonplaceholder.typicode.com/posts/1', { headers }).toPromise();
 
       if (response) {
-        console.log("Rival is online")
+        if (!this.authService.isLogged()) {
+          this.authService.logout();
+        }
         return true;
-
-
       } else {
-        console.log("Rival is NNNNNNNNNNot online")
         return false
-
       }
-
     } catch (error) {
-
       return false;
-
     }
 
   }

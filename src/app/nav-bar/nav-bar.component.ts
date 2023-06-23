@@ -9,8 +9,9 @@ import { Router } from "@angular/router";
 import { StorageService } from "../services/storage.service";
 import * as CONST from "../app-const";
 import { Setting } from "../models/setting.model";
+import { ArchivesOflineService } from "../archives-ofline.service";
 
-declare var $:any;
+declare var $: any;
 
 @Component({
   selector: "app-nav-bar",
@@ -20,7 +21,7 @@ declare var $:any;
 export class NavBarComponent implements OnInit, AfterViewInit {
   user: User;
   hasPrivilige: boolean[] = [];
-  private static PRIVILES_SESSION_NAME: string = "NavBarComponent.privileges";
+  public static PRIVILES_SESSION_NAME: string = "NavBarComponent.privileges";
   isLoading = true;
   isAnnonymous = true;
   isWaiting = false;
@@ -34,57 +35,73 @@ export class NavBarComponent implements OnInit, AfterViewInit {
     private alertService: AlertService,
     private archiveService: ArchiveService,
     private privilegeService: PrivilegeService,
+    private ArchivesOflineService: ArchivesOflineService,
     private storageService: StorageService,
     private router: Router
-  ) {}
+  ) {
+
+
+  }
 
   async ngOnInit() {
-    this.isLoading = true;
+    if (await this.ArchivesOflineService.navigatorOnline()) {
+      this.isLoading = true;
+      this.user = this.authService.getUser();
 
-    this.user = this.authService.getUser();
-
-    this.hasPrivilige = JSON.parse(
-      sessionStorage.getItem(NavBarComponent.PRIVILES_SESSION_NAME)!
-    );
-
-    if (!this.hasPrivilige || this.hasPrivilige.length == 0) {
-      this.hasPrivilige = [];
-      for (let i = 0; i < 100; i++) {
-        this.hasPrivilige[i] = false;
-      }
-
-      if (this.authService.isLogged()) {
-        let privileges = await this.privilegeService
-          .getPrivileges()
-          .toPromise();
-        privileges!.forEach((p) => {
-          this.hasPrivilige[p.id] = true;
-        });
-      }
-
-      sessionStorage.setItem(
-        NavBarComponent.PRIVILES_SESSION_NAME,
-        JSON.stringify(this.hasPrivilige)
+      this.hasPrivilige = JSON.parse(
+        sessionStorage.getItem(NavBarComponent.PRIVILES_SESSION_NAME)!
       );
 
-      if (this.user.login != "public") {
-        this.isAnnonymous = false;
+      if (!this.hasPrivilige || this.hasPrivilige.length == 0) {
+        this.hasPrivilige = [];
+        for (let i = 0; i < 100; i++) {
+          this.hasPrivilige[i] = false;
+        }
+
+        if (this.authService.isLogged()) {
+          let privileges = await this.privilegeService
+            .getPrivileges()
+            .toPromise();
+          privileges!.forEach((p) => {
+            this.hasPrivilige[p.id] = true;
+          });
+        }
+
+        sessionStorage.setItem(
+          NavBarComponent.PRIVILES_SESSION_NAME,
+          JSON.stringify(this.hasPrivilige)
+        );
+
+        localStorage.setItem(
+          NavBarComponent.PRIVILES_SESSION_NAME,
+          JSON.stringify(this.hasPrivilige)
+        );
+
+
+        if (this.user && this.user.login != "public") {
+          this.isAnnonymous = false;
+        }
       }
+
+      this.isLoading = false;
+
+      await this.listOfValidTypeOfFile();
+    }else{
+      this.isLoading=false;
+      this.hasPrivilige = JSON.parse(
+        localStorage.getItem(NavBarComponent.PRIVILES_SESSION_NAME)!
+      );
     }
-
-    this.isLoading = false;
-
-    await this.listOfValidTypeOfFile();
   }
 
   ngAfterViewInit() {
     this.handle();
   }
 
-  goToHome(){
-    if(this.isAdmin()){
+  goToHome() {
+    if (this.isAdmin()) {
       this.router.navigate(['/admin/home'])
-    }else{
+    } else {
 
       this.router.navigate(['/home'])
     }

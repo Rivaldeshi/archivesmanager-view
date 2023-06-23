@@ -18,6 +18,7 @@ export class LeftSideComponent implements OnInit, OnDestroy {
 
   groups: any[] = [];
   isLoading = true;
+  isOfline =false;
   unread: number = 0;
 
   private static SESSION_GROUPS = 'LeftSideComponent.session.groups';
@@ -54,6 +55,9 @@ export class LeftSideComponent implements OnInit, OnDestroy {
         this.onNewArchive(archive);
         this.authService.updateLastLogout();
       });
+    }else{
+      this.isLoading = false;
+      this.isOfline=true;
     }
   }
 

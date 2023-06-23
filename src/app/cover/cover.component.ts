@@ -41,9 +41,13 @@ export class CoverComponent implements OnInit {
     this.isImageLoading = true;
     caches.match(cover).then((cachedResponse) => {
       if (cachedResponse) {
+
         cachedResponse.blob().then((blob) => {
           this.createImageFromBlob(blob as Blob); // Enregistrer le fichier PDF localement
+        }).finally(()=>{
+          this.isImageLoading = false;
         });
+
       } else {
         this.loadResourceService.loadCover(cover, this.category).toPromise()
           .then(

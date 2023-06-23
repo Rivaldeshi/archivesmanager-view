@@ -61,11 +61,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
       console.log('User is offline');
     }
-
+    this.updateNavBarAndFooter();
 
     this.sub = this.router.events
       .subscribe((event) => {
         if (event instanceof NavigationEnd) {
+          this.updateNavBarAndFooter();
+        }else{
           this.updateNavBarAndFooter();
         }
       });
@@ -98,7 +100,6 @@ export class AppComponent implements OnInit, OnDestroy {
     let bool = document.URL
       && !document.URL.includes('login')
       && !document.URL.includes('forgot-password')
-      && this.authService.isLogged();
 
     if (this.showNavBarAndFooter != bool)
       this.showNavBarAndFooter = bool as boolean;

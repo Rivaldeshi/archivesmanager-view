@@ -12,6 +12,8 @@ import * as URL from "../app-url";
 import * as CONST from "../app-const";
 import { saveAs } from 'file-saver';
 import { ArchivesOflineService } from "../archives-ofline.service";
+import { NavBarComponent } from "../nav-bar/nav-bar.component";
+
 @Component({
   selector: "app-show-category",
   templateUrl: "./show-category.component.html",
@@ -32,6 +34,7 @@ export class ShowCategoryComponent implements OnInit {
 
   canDownload = false;
   canDelete = false;
+  hasPrivilige: boolean[] = [];
 
   //used by view
   p: any;
@@ -48,6 +51,7 @@ export class ShowCategoryComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.setUpPrivilige();
     if (await this.ArchivesOflineService.navigatorOnline()) {
       this.authService.hasPrivilege(13).then(bool => {
         this.canDownload = bool;
@@ -56,8 +60,9 @@ export class ShowCategoryComponent implements OnInit {
       this.authService.hasPrivilege(15).then(bool => {
         this.canDelete = bool;
       });
-    }else{
-      this.canDownload=true;
+    } else {
+      this.canDownload = this.hasPrivilige[13];
+      this.canDelete = this.hasPrivilige[15];
     }
 
     this.category = this.sharingService.getData<Category>();
@@ -117,7 +122,7 @@ export class ShowCategoryComponent implements OnInit {
       this.category.description = "Une fusion de toute les catégories";
     }
     if (await this.ArchivesOflineService.navigatorOnline()) {
-      const archives = await this.archiveService.allOfUser().toPromise();
+
 
       if (this.category.id > 0) {
 
@@ -125,24 +130,30 @@ export class ShowCategoryComponent implements OnInit {
           .allOfCategory(this.category.id)
           .toPromise();
       }
-      else this.archives = archives
+      else this.archives = await this.archiveService.allOfUser().toPromise();
 
-      await this.ArchivesOflineService.clearArchive();
-      archives?.forEach(async (a) => {
+      this.archives?.forEach(async (a) => {
+        this.ArchivesOflineService.downloadPDFAndPutInCache(a.path, a.category.slug)
         await this.ArchivesOflineService.addArchive(a);
       })
     } else {
       if (this.category.id > 0) {
 
-        this.archives = await this.ArchivesOflineService.getAllAChives();
+        this.archives = await this.ArchivesOflineService.getAllAChivesByCategory(this.category.id);
+
       }
       else this.archives = await this.ArchivesOflineService.getAllAChives();
+      console.log(this.archives);
     }
 
     this.setUpArchives();
 
   }
-
+  private setUpPrivilige() {
+    this.hasPrivilige = JSON.parse(
+      localStorage.getItem(NavBarComponent.PRIVILES_SESSION_NAME)!
+    );
+  }
   private async setUpArchives() {
     this.archives!.forEach(async (a, i) => {
       a.size = Utils.getReadableFileSizeString(a.size);
@@ -189,45 +200,10 @@ export class ShowCategoryComponent implements OnInit {
 
 
   downloadPDF(pdf: string, category: string) {
-
     caches.match(pdf).then((cachedResponse) => {
-
-
       if (cachedResponse) {
         cachedResponse.blob().then((blob) => {
           saveAs(blob, pdf); // Enregistrer le fichier PDF localement
-        });
-      } else {
-        const options: {
-          headers?: HttpHeaders | {
-            [header: string]: string | string[];
-          };
-          observe?: "body";
-          params?: HttpParams | {
-            [param: string]: string | string[];
-          };
-          reportProgress?: boolean;
-          responseType: "blob";
-          withCredentials?: boolean;
-        } = {
-          headers: {
-            'response-type': 'blob',
-          },
-          params: {
-            'pdf': pdf
-          },
-          responseType: 'blob',
-        }
-
-        let url = URL.PDF_RESOURCE;
-        url += `?${CONST.IGNORE_LOG_PARAM}=true&category=${category}`;
-        this.httpClient.get(url, options).subscribe((response: Blob) => {
-          console.log(response)
-          caches.open('pdfCache').then((cache) => {
-            const cacheResponse = new Response(response);
-            cache.put(pdf, cacheResponse);
-          });
-          saveAs(response, pdf);  // Specify the desired file name and location
         });
       }
     });

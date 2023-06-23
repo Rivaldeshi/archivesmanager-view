@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
   ) {
     let deconnection = this.route.snapshot.queryParams["action"];
     if (this.authenticationService.isLogged()) {
+
       this.redirect();
     } else if (deconnection) {
       this.showPage = true;
@@ -55,7 +56,10 @@ export class LoginComponent implements OnInit {
       this.router.navigate([nextUrl]);
     } else if (this.authenticationService.isAdmin())
       this.router.navigate(["/admin/home"]);
-    else this.router.navigate(["/home"]);
+    else {
+      this.router.navigate(["/home"])
+
+    };
   }
 
   // convenience getter for easy access to form fields
@@ -89,8 +93,8 @@ export class LoginComponent implements OnInit {
 
   async publicLogin() {
     this.publicLoading = true;
+
     if (await this.ArchivesOflineService.navigatorOnline()) {
-      console.log("dsjhdshjdsdsdsdsdsdshhhhhhhhhhhhhhhhhhhhhhh")
       this.authenticationService
         .login(PUBLIC_USER_LOGIN, PUBLIC_USER_PASSWORD)
         .then((loggedIn: boolean) => {
@@ -105,9 +109,7 @@ export class LoginComponent implements OnInit {
           this.loading = false;
         });
     } else {
-      console.log("hgdsahgshgd")
       this.router.navigate(["/home"]);
-      this.redirect();
     }
   }
 
