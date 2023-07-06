@@ -23,7 +23,7 @@ export class UsersComponent implements OnInit {
   allUsers: User[] = [];
   data: User[] = [];
   roles: Role[] = [];
-  user: User= new User;
+  user: User = new User;
   idToDelete: number;
   returnUrl: string;
   showDeleteUserModal = false;
@@ -80,17 +80,29 @@ export class UsersComponent implements OnInit {
 
   //This function is used to get users
   getUsers() {
-    this.userService.getUsers().subscribe({
-      next: (data: User[]) => {
-        this.data = data;
-        this.allUsers = data;
-        this.mainLoading = false;
-      },
-      error: (err: HttpErrorResponse) => {
-        this.alert.error("" + err);
-        this.mainLoading = false;
-      }
-    });
+    console.log("sndmssssssssssssssssssssssssssss")
+    this.userService.getUsers().toPromise().then((data: User[] | undefined) => {
+      console.log(data, "   sdd             ")
+      this.data = (data !== undefined) ? data : [];
+      this.allUsers = data!;
+      this.mainLoading = false;
+    }).catch((err) => {
+      console.log(err)
+      this.alert.error("" + err);
+      this.mainLoading = false;
+    })
+
+    // next: (data: User[]) => {
+    //   console.log("bsdbsnbnbsnbd");
+    //   this.data = data!;
+    //   this.allUsers = data!;
+    //   this.mainLoading = false;
+    // },
+    // error: (err: HttpErrorResponse) => {
+    //   this.alert.error("" + err);
+    //   this.mainLoading = false;
+    // }
+
   }
 
   //this function is used to block/deblock user

@@ -433,6 +433,7 @@ export class ArchivesOflineService {
       const headers = { 'SkipInterceptor': 'true' };
       const response = await this.httpClient.get<any>('https://jsonplaceholder.typicode.com/posts/1', { headers }).toPromise();
 
+
       if (response) {
         if (!this.authService.isLogged()) {
           this.authService.logout();
@@ -442,6 +443,7 @@ export class ArchivesOflineService {
         return false
       }
     } catch (error) {
+      console.log(error)
       return false;
     }
 

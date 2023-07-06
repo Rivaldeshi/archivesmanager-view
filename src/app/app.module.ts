@@ -84,6 +84,9 @@ import { AaaComponent } from './aaa/aaa.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { OnboardingComponent } from './onboarding/onboarding.component';
 import { TestComponent } from './test/test.component';
+import { MyInterceptor } from './helpers/response-interceptor.helper';
+import { OfflineInterceptor } from './helpers/oflineserviceInterceptor..helper';
+import { CacheService } from './cache.service';
 
 const appRoutes: Routes = [
 	{ path: "", component: LoginComponent },
@@ -438,8 +441,11 @@ const customNotifierOptions: NotifierOptions = {
 		CategoryService,
 		LoadResourceService,
 		DisseminationService,
+    CacheService,
     { provide: HTTP_INTERCEPTORS, useClass: AddTokenInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: OfflineInterceptor, multi: true },
+
   ],
   bootstrap: [AppComponent]
 })

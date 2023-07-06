@@ -54,6 +54,11 @@ export class AppComponent implements OnInit, OnDestroy {
     this.detectPWA();
     //  this.downloadPdfs();
 
+    window.addEventListener('beforeinstallprompt', (event) => {
+      event.preventDefault();
+      alert("Rivalde")
+    });
+
     if (await this.ArchivesOflineService.navigatorOnline()) {
 
       console.log('User is online');
